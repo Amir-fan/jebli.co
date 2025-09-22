@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Turkish Shops - JEBLI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__row">
+            <div class="logo">JEBLI</div>
+            
+            <!-- Navigation -->
+            <nav class="nav" id="mainNav">
+                <!-- Mobile Menu Close Button -->
+                <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">×</button>
+                <a href="index.html" class="nav-link" data-i18n="nav_home">Home</a>
+                <a href="shops.html" class="nav-link active" data-i18n="nav_shops">Shops</a>
+                <a href="track.html" class="nav-link" data-i18n="nav_track">Track Order</a>
+                <a href="contact.html" class="nav-link" data-i18n="nav_contact">Contact</a>
+            </nav>
+            
+            <div class="actions">
+                <div class="language-selector">
+                    <select id="langSelect" class="lang-dropdown" aria-label="Select language">
+                        <option value="en">EN</option>
+                        <option value="ar">AR</option>
+                    </select>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section section--tint shops-hero">
+        <div class="container center">
+            <h1 data-i18n="shops_title">Browse Turkish Shops</h1>
+            <p class="muted" data-i18n="shops_subtitle">Discover amazing deals from top Turkish online stores</p>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="section">
+        <div class="container">
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div>
+                        <label for="categoryFilter" data-i18n="filter_by_category">Category</label>
+                        <select id="categoryFilter" class="select" onchange="filterShops()">
+                            <option value="" data-i18n="all_categories">All Categories</option>
+                            <option value="womens-fashion" data-i18n="womens_fashion">Women's Fashion</option>
+                            <option value="mens-fashion" data-i18n="mens_fashion">Men's Fashion</option>
+                            <option value="fashion" data-i18n="fashion">General Fashion</option>
+                            <option value="sport" data-i18n="sport">Sport</option>
+                            <option value="electronics" data-i18n="electronics">Electronics</option>
+                            <option value="beauty" data-i18n="beauty">Beauty</option>
+                            <option value="jewelry" data-i18n="jewelry">Jewelry</option>
+                            <option value="home_lifestyle" data-i18n="home_lifestyle">Home & Lifestyle</option>
+                            <option value="travel" data-i18n="travel">Travel</option>
+                            <option value="marketplace" data-i18n="marketplace">Marketplace</option>
+                            <option value="kids_fashion" data-i18n="kids_fashion">Kids & Baby Fashion</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="searchFilter" data-i18n="search_shops">Search</label>
+                        <input type="text" id="searchFilter" class="input" data-i18n-placeholder="search_shops" placeholder="Search shops..." oninput="filterShops()">
+                    </div>
+                    <div>
+                        <button class="btn btn--ghost" onclick="refreshShops()">🔄 Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shops Grid -->
+    <section class="section">
+        <div class="container">
+            <div id="shopsGrid" class="shops-grid">
+                <!-- Shops will be populated here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>JEBLI</h3>
+                    <p data-i18n="footer_description">Making online shopping accessible and convenient for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="quick_links">Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                        <li><a href="shops.html" data-i18n="nav_shops">Shops</a></li>
+                        <li><a href="index.html#how" data-i18n="how_it_works">How it Works</a></li>
+                        <li><a href="index.html#order" data-i18n="order_form">Order Form</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="contact_info">Contact Info</h4>
+                    <p><a href="mailto:Jebli963.90@gmail.com" class="contact-link">📧 Jebli963.90@gmail.com</a></p>
+                    <p><a href="tel:+905333252333" class="contact-link">📱 +90 533 325 23 33</a></p>
+                    <a href="https://wa.me/905333252333?text=Hello! I would like to learn more about JEBLI services." target="_blank" class="btn btn--whatsapp">
+                        💬 WhatsApp
+                    </a>
+                </div>
+                <div class="footer-section">
+                    <h4>Developed by Fanari Labs</h4>
+                    <button class="fanari-labs-btn" onclick="openFanariLabsPopup()">
+                        <span class="btn-icon">👨‍💻</span>
+                        <span class="btn-text">Click for Contact Info</span>
+                    </button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="copyright">&copy; 2024 JEBLI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script src="shops.js"></script>
+
+    <!-- Fanari Labs Popup -->
+    <div id="fanariLabsPopup" class="fanari-popup">
+        <div class="fanari-popup-content">
+            <div class="popup-header">
+                <h3 style="color: white;">👨‍💻 Fanari Labs</h3>
+            </div>
+            <div class="popup-body">
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <a href="tel:+904379295163" class="contact-link">+90 437 929 51 63</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <a href="mailto:fanarilabs@gmail.com" class="contact-link">fanarilabs@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🌐</span>
+                    <a href="https://fanarilabs.com" target="_blank" class="contact-link">fanarilabs.com</a>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <p class="popup-description">AI and web dev agency</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== FANARI LABS POPUP FUNCTIONALITY =====
+
+        // Open Fanari Labs popup
+        function openFanariLabsPopup() {
+            const popup = document.getElementById('fanariLabsPopup');
+            if (popup) {
+                popup.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                
+                // Add escape key listener
+                document.addEventListener('keydown', handlePopupEscape);
+                
+                // Add click outside listener
+                popup.addEventListener('click', handlePopupOutsideClick);
+                
+                console.log('👨‍💻 Fanari Labs popup opened');
+            }
+        }
+
+        // Close Fanari Labs popup
+        function closeFanariLabsPopup() {
+            const popup = document.getElementById('fanariLabsPopup');
+            if (popup) {
+                popup.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+                
+                // Remove event listeners
+                document.removeEventListener('keydown', handlePopupEscape);
+                popup.removeEventListener('click', handlePopupOutsideClick);
+                
+                console.log('👨‍💻 Fanari Labs popup closed');
+            }
+        }
+
+        // Handle escape key for popup
+        function handlePopupEscape(event) {
+            if (event.key === 'Escape') {
+                closeFanariLabsPopup();
+            }
+        }
+
+        // Handle click outside popup content
+        function handlePopupOutsideClick(event) {
+            if (event.target === event.currentTarget) {
+                closeFanariLabsPopup();
+            }
+        }
+    </script>
+</body>
+</html>

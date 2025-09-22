@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - JEBLI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="translations.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__row">
+            <div class="logo">JEBLI</div>
+            
+            <!-- Navigation -->
+            <nav class="nav" id="mainNav">
+                <!-- Mobile Menu Close Button -->
+                <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">×</button>
+                <a href="index.html" class="nav-link" data-i18n="nav_home">Home</a>
+                <a href="shops.html" class="nav-link" data-i18n="nav_shops">Shops</a>
+                <a href="track.html" class="nav-link active" data-i18n="nav_track">Track Order</a>
+                <a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+            </nav>
+            
+            <div class="actions">
+                <div class="language-selector">
+                    <select id="langSelect" class="lang-dropdown" aria-label="Select language">
+                        <option value="en">EN</option>
+                        <option value="ar">AR</option>
+                    </select>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section section--tint hero">
+        <div class="container center">
+            <h1 data-i18n="track_hero_title">Track Your Order</h1>
+            <p class="muted" data-i18n="track_hero_subtitle">Enter your tracking ID to check the status of your JEBLI order</p>
+        </div>
+    </section>
+
+    <!-- Tracking Section -->
+    <section class="section">
+        <div class="container">
+            <div class="tracking-container">
+                <!-- Search Form -->
+                <div class="card tracking-card">
+                    <div class="tracking-header">
+                        <h3 data-i18n="track_form_title">Order Tracking</h3>
+                        <p class="tracking-subtitle" data-i18n="track_form_subtitle">Enter your tracking ID to get real-time updates on your order status</p>
+                    </div>
+                    <div class="tracking-form">
+                        <div class="input-group">
+                            <label for="trackingInput" data-i18n="track_form_label">Tracking ID</label>
+                            <input type="text" id="trackingInput" class="input tracking-input" data-i18n-placeholder="track_form_placeholder" placeholder="Enter your tracking ID..." maxlength="50">
+                        </div>
+                        <button id="trackBtn" class="btn btn--primary" onclick="trackOrder()">
+                            <span class="btn-icon">🔍</span>
+                            <span data-i18n="track_form_button">Track Order</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="trackingResults" class="tracking-results" style="display: none;">
+                    <!-- Order Header -->
+                    <div class="card order-header-card">
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3 class="order-title" data-i18n="track_results_title">Order Details</h3>
+                                <div class="tracking-id-display">
+                                    <span class="tracking-id-label" data-i18n="track_tracking_id">Tracking ID:</span>
+                                    <span class="tracking-id-value" id="trackingIdDisplay"></span>
+                                    <button class="copy-tracking-btn" onclick="copyTrackingId()" title="Copy tracking ID">
+                                        <span class="copy-icon">📋</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="order-status-display" id="orderStatusDisplay">
+                                <!-- Status will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Timeline -->
+                    <div class="card timeline-card">
+                        <h4 class="timeline-title" data-i18n="track_timeline_title">Order Timeline</h4>
+                        <div class="timeline" id="orderTimeline">
+                            <!-- Timeline will be populated here -->
+                        </div>
+                    </div>
+
+                    <!-- Order Details -->
+                    <div class="order-details-grid">
+                        <!-- Customer Information -->
+                        <div class="card detail-card">
+                            <h4 class="detail-title" data-i18n="track_customer_info">Customer Information</h4>
+                            <div class="detail-content" id="customerInfo">
+                                <!-- Customer info will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="card detail-card">
+                            <h4 class="detail-title" data-i18n="track_order_summary">Order Summary</h4>
+                            <div class="detail-content" id="orderSummary">
+                                <!-- Order summary will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Items List -->
+                        <div class="card detail-card items-card">
+                            <h4 class="detail-title" data-i18n="track_order_items">Order Items</h4>
+                            <div class="detail-content" id="orderItems">
+                                <!-- Items will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Shipping Information -->
+                        <div class="card detail-card">
+                            <h4 class="detail-title" data-i18n="track_shipping_info">Shipping Information</h4>
+                            <div class="detail-content" id="shippingInfo">
+                                <!-- Shipping info will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- No Results Message -->
+                <div id="noResults" class="no-results" style="display: none;">
+                    <div class="card center">
+                        <div class="no-results-icon">❌</div>
+                        <h3 data-i18n="track_no_results_title">Order Not Found</h3>
+                        <p class="muted" data-i18n="track_no_results_message">No order found with the provided tracking ID. Please check your ID and try again.</p>
+                        <button class="btn btn--ghost" onclick="resetTracking()" data-i18n="track_no_results_try_again">Try Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 data-i18n="track_contact_info">Contact Info</h4>
+                    <p><a href="mailto:Jebli963.90@gmail.com" class="contact-link">📧 Jebli963.90@gmail.com</a></p>
+                    <p><a href="tel:+905333252333" class="contact-link">📱 +90 533 325 23 33</a></p>
+                    <a href="https://wa.me/905333252333?text=Hello! I would like to learn more about JEBLI services." target="_blank" class="btn btn--whatsapp">
+                        💬 WhatsApp
+                    </a>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="track_quick_links">Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                        <li><a href="shops.html" data-i18n="nav_shops">Shops</a></li>
+                        <li><a href="index.html#how" data-i18n="how_it_works">How it Works</a></li>
+                        <li><a href="index.html#order" data-i18n="order_form">Order Form</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="track_developed_by">Developed by Fanari Labs</h4>
+                    <button class="fanari-labs-btn" onclick="openFanariLabsPopup()">
+                        <span class="btn-icon">👨‍💻</span>
+                        <span class="btn-text">Click for Contact Info</span>
+                    </button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="track_copyright">&copy; 2024 JEBLI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fanari Labs Popup -->
+    <div id="fanariLabsPopup" class="fanari-popup">
+        <div class="fanari-popup-content">
+            <div class="popup-header">
+                <h3 style="color: white;">👨‍💻 Fanari Labs</h3>
+            </div>
+            <div class="popup-body">
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <a href="tel:+904379295163" class="contact-link">+90 437 929 51 63</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <a href="mailto:fanarilabs@gmail.com" class="contact-link">fanarilabs@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🌐</span>
+                    <a href="https://fanarilabs.com" target="_blank" class="contact-link">fanarilabs.com</a>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <p class="popup-description">AI and web dev agency</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script>
+        // Configuration
+        const JEBLI_CONFIG = {
+            API_URL: 'https://script.google.com/macros/s/AKfycbyHJLn5xA92WLBrTxghMrwzJBPVSeP1CEab1OUcgGsydygsfTTlfqF7fE5DnMycxlveLw/exec',
+            API_KEY: 'jebli_secret_key_2024_xyz789_secure_hash'
+        };
+
+        // Track order function
+        async function trackOrder() {
+            const trackingId = document.getElementById('trackingInput').value.trim().toUpperCase();
+
+            if (!trackingId) {
+                showToast('Please enter a tracking ID', 'error');
+                return;
+            }
+
+            // Show loading state
+            document.getElementById('trackBtn').disabled = true;
+            document.getElementById('trackBtn').innerHTML = '<span class="btn-icon">⏳</span> Tracking...';
+
+            try {
+                console.log('🔍 Tracking order:', trackingId);
+                console.log('🌐 API URL:', JEBLI_CONFIG.API_URL);
+                
+                // Call backend API
+                const response = await fetch(`${JEBLI_CONFIG.API_URL}?action=get&tracking_id=${encodeURIComponent(trackingId)}`);
+                console.log('📡 Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('📊 Response data:', data);
+
+                if (data.ok && data.order) {
+                    console.log('✅ Order found:', data.order);
+                    displayOrderDetails(data.order);
+                    document.getElementById('trackingResults').style.display = 'block';
+                    document.getElementById('noResults').style.display = 'none';
+                } else {
+                    console.log('❌ Order not found or error:', data);
+                    document.getElementById('trackingResults').style.display = 'none';
+                    document.getElementById('noResults').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('❌ Error tracking order:', error);
+                showToast('Error connecting to server. Please try again.', 'error');
+                document.getElementById('trackingResults').style.display = 'none';
+                document.getElementById('noResults').style.display = 'block';
+            } finally {
+                // Reset button state
+                document.getElementById('trackBtn').disabled = false;
+                document.getElementById('trackBtn').innerHTML = '<span class="btn-icon">🔍</span> Track Order';
+            }
+        }
+
+        // Display order details with comprehensive information
+        function displayOrderDetails(order) {
+            // Set tracking ID display
+            document.getElementById('trackingIdDisplay').textContent = order.tracking_id || 'N/A';
+            
+            // Display order status
+            displayOrderStatus(order);
+            
+            // Display timeline
+            displayOrderTimeline(order);
+            
+            // Display customer information
+            displayCustomerInfo(order);
+            
+            // Display order summary
+            displayOrderSummary(order);
+            
+            // Display order items
+            displayOrderItems(order);
+            
+            // Display shipping information
+            displayShippingInfo(order);
+        }
+
+        // Display order status
+        function displayOrderStatus(order) {
+            const statusDisplay = document.getElementById('orderStatusDisplay');
+            const statusClass = getStatusClass(order.status);
+            const statusIcon = getStatusIcon(order.status);
+            const statusText = getStatusText(order.status);
+            
+            statusDisplay.innerHTML = `
+                <div class="status-badge ${statusClass}">
+                    <span class="status-icon">${statusIcon}</span>
+                    <span class="status-text">${statusText}</span>
+                </div>
+                <div class="status-description">${getStatusDescription(order.status)}</div>
+            `;
+        }
+
+        // Display order timeline
+        function displayOrderTimeline(order) {
+            const timeline = document.getElementById('orderTimeline');
+            const statuses = ['Submitted', 'Preparing', 'Shipped', 'Delivered'];
+            const currentStatus = order.status;
+            const orderDate = order.timestamp ? new Date(order.timestamp) : new Date();
+            
+            // Create timeline items
+            const timelineItems = statuses.map((status, index) => {
+                const isCompleted = isStatusCompleted(currentStatus, status);
+                const isCurrent = currentStatus === status;
+                const statusClass = isCompleted ? 'completed' : isCurrent ? 'current' : 'pending';
+                const statusIcon = getStatusIcon(status);
+                const statusText = getStatusText(status);
+                const statusDescription = getStatusDescription(status);
+                
+                // Calculate estimated date for each status
+                const estimatedDate = calculateEstimatedDate(orderDate, status, currentStatus);
+                
+                return `
+                    <div class="timeline-item ${statusClass}">
+                        <div class="timeline-marker">
+                            <span class="timeline-icon">${statusIcon}</span>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">${statusText}</div>
+                            <div class="timeline-description">${statusDescription}</div>
+                            <div class="timeline-date">${estimatedDate}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            timeline.innerHTML = timelineItems;
+        }
+
+        // Display customer information
+        function displayCustomerInfo(order) {
+            const customerInfo = document.getElementById('customerInfo');
+            
+            customerInfo.innerHTML = `
+                <div class="info-row">
+                    <span class="info-label">Name:</span>
+                    <span class="info-value">${order.name || 'N/A'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">
+                        <a href="mailto:${order.email}" class="info-link">${order.email || 'N/A'}</a>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">WhatsApp:</span>
+                    <span class="info-value">
+                        <a href="https://wa.me/${order.whatsapp?.replace(/[^0-9]/g, '')}" target="_blank" class="info-link">${order.whatsapp || 'N/A'}</a>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">City:</span>
+                    <span class="info-value">${order.city || 'N/A'}</span>
+                </div>
+                ${order.customer_notes ? `
+                    <div class="info-row">
+                        <span class="info-label">Notes:</span>
+                        <span class="info-value notes">${order.customer_notes}</span>
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        // Display order summary
+        function displayOrderSummary(order) {
+            const orderSummary = document.getElementById('orderSummary');
+            const total = parseFloat(order.total_usd || order.totalUSD || 0);
+            const items = order.items ? (typeof order.items === 'string' ? JSON.parse(order.items) : order.items) : [];
+            const totalWeight = parseFloat(order.total_weight_kg || order.totalWeightKg || 0);
+            
+            orderSummary.innerHTML = `
+                <div class="summary-row">
+                    <span class="summary-label">Order Date:</span>
+                    <span class="summary-value">${order.timestamp ? new Date(order.timestamp).toLocaleDateString() : 'N/A'}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Items Count:</span>
+                    <span class="summary-value">${items.length} item(s)</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Total Weight:</span>
+                    <span class="summary-value">${totalWeight.toFixed(2)} kg</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span class="summary-label">Total Amount:</span>
+                    <span class="summary-value total-amount">$${total.toFixed(2)}</span>
+                </div>
+            `;
+        }
+
+        // Display order items
+        function displayOrderItems(order) {
+            const orderItems = document.getElementById('orderItems');
+            let items = order.items;
+            
+            if (typeof items === 'string') {
+                try {
+                    items = JSON.parse(items);
+                } catch (e) {
+                    items = [];
+                }
+            }
+            
+            if (!items || items.length === 0) {
+                orderItems.innerHTML = '<p class="no-items">No items found</p>';
+                return;
+            }
+            
+            const itemsHTML = items.map((item, index) => `
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-number">#${index + 1}</span>
+                        <a href="${item.url}" target="_blank" class="item-link">View Product</a>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-url">${item.url}</div>
+                        <div class="item-meta">
+                            ${item.size && item.size !== 'N/A' && item.size !== '' ? `
+                                <span class="item-meta-tag">Size: ${item.size}</span>
+                            ` : ''}
+                            ${item.color && item.color !== 'N/A' && item.color !== '' ? `
+                                <span class="item-meta-tag">Color: ${item.color}</span>
+                            ` : ''}
+                            <span class="item-meta-tag">Qty: ${item.qty || 1}</span>
+                        </div>
+                        <div class="item-pricing">
+                            <span class="item-price">${parseFloat(item.priceTL || 0).toFixed(2)} TL</span>
+                            <span class="item-weight">${parseFloat(item.weightKg || 0).toFixed(2)} kg</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            orderItems.innerHTML = itemsHTML;
+        }
+
+        // Display shipping information
+        function displayShippingInfo(order) {
+            const shippingInfo = document.getElementById('shippingInfo');
+            const currentStatus = order.status;
+            
+            let shippingDetails = '';
+            
+            if (currentStatus === 'Shipped' || currentStatus === 'Delivered') {
+                shippingDetails = `
+                    <div class="info-row">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value shipped">In Transit</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Estimated Delivery:</span>
+                        <span class="info-value">7-10 business days</span>
+                    </div>
+                `;
+            } else if (currentStatus === 'Delivered') {
+                shippingDetails = `
+                    <div class="info-row">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value delivered">Delivered</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Delivery Date:</span>
+                        <span class="info-value">${new Date().toLocaleDateString()}</span>
+                    </div>
+                `;
+            } else {
+                shippingDetails = `
+                    <div class="info-row">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value pending">Preparing for Shipment</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Next Step:</span>
+                        <span class="info-value">Order processing</span>
+                    </div>
+                `;
+            }
+            
+            shippingInfo.innerHTML = `
+                ${shippingDetails}
+                <div class="info-row">
+                    <span class="info-label">Shipping Method:</span>
+                    <span class="info-value">Standard Shipping</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Destination:</span>
+                    <span class="info-value">${order.city || 'N/A'}</span>
+                </div>
+            `;
+        }
+
+        // Get status class for styling
+        function getStatusClass(status) {
+            switch(status) {
+                case 'Submitted': return 'status-submitted';
+                case 'Preparing': return 'status-preparing';
+                case 'Shipped': return 'status-shipped';
+                case 'Delivered': return 'status-delivered';
+                case 'Cancelled': return 'status-cancelled';
+                default: return 'status-default';
+            }
+        }
+
+        // Get status icon
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'Submitted': return '📝';
+                case 'Preparing': return '📦';
+                case 'Shipped': return '🚚';
+                case 'Delivered': return '✅';
+                case 'Cancelled': return '❌';
+                default: return '❓';
+            }
+        }
+
+        // Get status text
+        function getStatusText(status) {
+            switch(status) {
+                case 'Submitted': return 'Order Submitted';
+                case 'Preparing': return 'Preparing Order';
+                case 'Shipped': return 'Shipped';
+                case 'Delivered': return 'Delivered';
+                case 'Cancelled': return 'Cancelled';
+                default: return 'Unknown';
+            }
+        }
+
+        // Get status description
+        function getStatusDescription(status) {
+            switch(status) {
+                case 'Submitted': return 'Your order has been received and is being processed';
+                case 'Preparing': return 'Your items are being prepared and packaged for shipment';
+                case 'Shipped': return 'Your order is on its way to you';
+                case 'Delivered': return 'Your order has been successfully delivered';
+                case 'Cancelled': return 'This order has been cancelled';
+                default: return 'Status unknown';
+            }
+        }
+
+        // Check if status is completed
+        function isStatusCompleted(currentStatus, status) {
+            const statusOrder = ['Submitted', 'Preparing', 'Shipped', 'Delivered'];
+            const currentIndex = statusOrder.indexOf(currentStatus);
+            const statusIndex = statusOrder.indexOf(status);
+            
+            if (currentStatus === 'Cancelled') {
+                return status === 'Submitted'; // Only submitted is completed for cancelled orders
+            }
+            
+            return currentIndex > statusIndex;
+        }
+
+        // Calculate estimated date for status
+        function calculateEstimatedDate(orderDate, status, currentStatus) {
+            const statusOrder = ['Submitted', 'Preparing', 'Shipped', 'Delivered'];
+            const statusIndex = statusOrder.indexOf(status);
+            const currentIndex = statusOrder.indexOf(currentStatus);
+            
+            if (currentStatus === 'Cancelled') {
+                return status === 'Submitted' ? 'Completed' : 'N/A';
+            }
+            
+            if (currentIndex > statusIndex) {
+                return 'Completed';
+            } else if (currentIndex === statusIndex) {
+                return 'In Progress';
+            } else {
+                // Calculate estimated date based on status
+                const daysToAdd = statusIndex * 2; // 2 days per status
+                const estimatedDate = new Date(orderDate);
+                estimatedDate.setDate(estimatedDate.getDate() + daysToAdd);
+                return estimatedDate.toLocaleDateString();
+            }
+        }
+
+        // Copy tracking ID
+        function copyTrackingId() {
+            const trackingId = document.getElementById('trackingIdDisplay').textContent;
+            navigator.clipboard.writeText(trackingId).then(() => {
+                const btn = document.querySelector('.copy-tracking-btn');
+                btn.innerHTML = '<span class="copy-icon">✅</span>';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerHTML = '<span class="copy-icon">📋</span>';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                showToast('Failed to copy tracking ID', 'error');
+            });
+        }
+
+        // Reset tracking
+        function resetTracking() {
+            document.getElementById('trackingInput').value = '';
+            document.getElementById('trackingResults').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+            document.getElementById('trackingInput').focus();
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            // Add to page
+            document.body.appendChild(toast);
+            
+            // Show toast
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            // Remove toast
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Initialize translations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Translations are already initialized by translations.js
+            // Just ensure language selector is synced
+            if (typeof window.syncLanguageSelector === 'function') {
+                window.syncLanguageSelector();
+            }
+            
+            // Setup mobile menu
+            setupMobileMenu();
+            
+            // Setup language selector
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) {
+                langSelect.addEventListener('change', function(event) {
+                    const newLang = event.target.value;
+                    if (typeof window.changeLanguage === 'function') {
+                        window.changeLanguage(newLang);
+                    }
+                });
+            }
+            
+            // Auto-focus tracking input
+            setTimeout(() => {
+                const trackingInput = document.getElementById('trackingInput');
+                if (trackingInput) {
+                    trackingInput.focus();
+                }
+            }, 500);
+        });
+
+        // ===== MOBILE MENU FUNCTIONALITY =====
+
+        // Setup mobile menu
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const mainNav = document.getElementById('mainNav');
+            const body = document.body;
+            
+            if (!mobileMenuBtn || !mainNav) {
+                console.log('❌ Mobile menu elements not found');
+                return;
+            }
+            
+            console.log('✅ Setting up mobile menu...');
+            
+            // Toggle mobile menu
+            mobileMenuBtn.addEventListener('click', function() {
+                const isActive = mainNav.classList.contains('active');
+                
+                if (isActive) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            });
+            
+            // Close menu when clicking close button
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', function() {
+                    closeMobileMenu();
+                });
+            }
+            
+            // Close menu when clicking on nav links
+            const navLinks = mainNav.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenuBtn.contains(event.target) && !mainNav.contains(event.target)) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Close menu on escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Close menu on window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        // Open mobile menu
+        function openMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            if (mobileMenuBtn && mainNav) {
+                mobileMenuBtn.classList.add('active');
+                mainNav.classList.add('active');
+                body.style.overflow = 'hidden';
+                console.log('📱 Mobile menu opened');
+            }
+        }
+
+        // Close mobile menu
+        function closeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            if (mobileMenuBtn && mainNav) {
+                mobileMenuBtn.classList.remove('active');
+                mainNav.classList.remove('active');
+                body.style.overflow = '';
+                console.log('📱 Mobile menu closed');
+            }
+        }
+
+        // ===== FANARI LABS POPUP =====
+
+        // Open Fanari Labs popup
+        function openFanariLabsPopup() {
+            const popup = document.getElementById('fanariLabsPopup');
+            if (popup) {
+                popup.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                
+                // Add escape key listener
+                document.addEventListener('keydown', handlePopupEscape);
+                
+                // Add click outside listener
+                popup.addEventListener('click', handlePopupOutsideClick);
+                
+                console.log('👨‍💻 Fanari Labs popup opened');
+            }
+        }
+
+        // Close Fanari Labs popup
+        function closeFanariLabsPopup() {
+            const popup = document.getElementById('fanariLabsPopup');
+            if (popup) {
+                popup.classList.remove('show');
+                document.body.style.overflow = '';
+                
+                // Remove event listeners
+                document.removeEventListener('keydown', handlePopupEscape);
+                popup.removeEventListener('click', handlePopupOutsideClick);
+                
+                console.log('👨‍💻 Fanari Labs popup closed');
+            }
+        }
+
+        // Handle escape key for popup
+        function handlePopupEscape(event) {
+            if (event.key === 'Escape') {
+                closeFanariLabsPopup();
+            }
+        }
+
+        // Handle click outside popup content
+        function handlePopupOutsideClick(event) {
+            if (event.target === event.currentTarget) {
+                closeFanariLabsPopup();
+            }
+        }
+    </script>
+</body>
+</html>

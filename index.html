@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEBLI - From Turkey to you</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__row">
+            <div class="logo">JEBLI</div>
+            
+            <!-- Navigation -->
+            <nav class="nav" id="mainNav">
+                <!-- Mobile Menu Close Button -->
+                <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">×</button>
+                <a href="index.html" class="nav-link active" data-i18n="nav_home">Home</a>
+                <a href="shops.html" class="nav-link" data-i18n="nav_shops">Shops</a>
+                <a href="track.html" class="nav-link" data-i18n="nav_track">Track Order</a>
+                <a href="contact.html" class="nav-link" data-i18n="nav_contact">Contact</a>
+            </nav>
+            
+            <div class="actions">
+                <div class="language-selector">
+                    <select id="langSelect" class="lang-dropdown" aria-label="Select language">
+                        <option value="en">EN</option>
+                        <option value="ar">AR</option>
+                    </select>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section section--tint hero">
+        <div class="container center">
+            <div class="hero-decoration">
+                <div class="shopping-bag-icon"></div>
+            </div>
+            <h1 data-i18n="hero_title">From Turkey to you, send the link, we bring it.</h1>
+            <p class="muted" data-i18n="hero_sub">Average delivery 7 to 10 days. Transparent fees.</p>
+            <div class="hero__cta">
+                <a href="#order" class="btn" data-i18n="cta_send_link">Send a Link</a>
+                <a href="#how" class="btn btn--ghost" data-i18n="cta_how">How it works</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section id="how" class="section">
+        <div class="container">
+            <h2 class="center" data-i18n="how_title">How It Works</h2>
+                         <div class="grid grid--4 mt24">
+                 <div class="card center">
+                     <div class="icon">
+                         <img src="brand-logos/Send us product links.png" alt="Send us product links" style="width: 48px; height: 48px; object-fit: contain;">
+                     </div>
+                     <h3 data-i18n="how_1_t">Send us product links</h3>
+                     <p class="muted" data-i18n="how_1_d">Paste links from Trendyol or other shops.</p>
+                 </div>
+                 <div class="card center">
+                     <div class="icon">
+                         <img src="brand-logos/Pay in Syria.png" alt="Pay in Syria" style="width: 48px; height: 48px; object-fit: contain;">
+                     </div>
+                     <h3 data-i18n="how_2_t">Pay in Syria</h3>
+                     <p class="muted" data-i18n="how_2_d">Cash at our office after confirmation.</p>
+                 </div>
+                 <div class="card center">
+                     <div class="icon">
+                         <img src="brand-logos/We ship with care.png" alt="We ship with care" style="width: 48px; height: 48px; object-fit: contain;">
+                     </div>
+                     <h3 data-i18n="how_3_t">We ship with care</h3>
+                     <p class="muted" data-i18n="how_3_d">Packed and shipped within days.</p>
+                 </div>
+                 <div class="card center">
+                     <div class="icon">
+                         <img src="brand-logos/Receive quickly.png" alt="Receive quickly" style="width: 48px; height: 48px; object-fit: contain;">
+                     </div>
+                     <h3 data-i18n="how_4_t">Receive quickly</h3>
+                     <p class="muted" data-i18n="how_4_d">Typical arrival about 1 week.</p>
+                 </div>
+             </div>
+            <p class="center muted mt16" data-i18n="how_note">
+                                 Orders typically arrive in about 1 week; stock/size availability may affect timing.
+            </p>
+        </div>
+    </section>
+
+    <!-- Trust Indicators Section -->
+    <section class="section section--tint">
+        <div class="container">
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <div class="trust-icon">🛡️</div>
+                    <h4>Secure & Safe</h4>
+                    <p class="muted">Your orders are handled with care and security</p>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">⚡</div>
+                    <h4>Fast Delivery</h4>
+                    <p class="muted">Average 7-10 days from Turkey to Syria</p>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">💰</div>
+                    <h4>Transparent Pricing</h4>
+                    <p class="muted">No hidden fees, clear cost breakdown</p>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">📞</div>
+                    <h4>24/7 Support</h4>
+                    <p class="muted">Always here to help with your orders</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+         <!-- Start Options Section -->
+     <section class="section section--tint">
+         <div class="container">
+             <div class="start-options-grid">
+                 <div class="card center start-option-card">
+                     <h3 data-i18n="start_browse_t">Browse Shops</h3>
+                     <p class="muted" data-i18n="start_browse_d">Discover Turkish shops and products.</p>
+                     <a href="shops.html" class="btn mt16" data-i18n="start_browse_btn">Browse All Shops</a>
+                 </div>
+                 <div class="card center start-option-card">
+                     <h3 data-i18n="start_form_t">Order Form</h3>
+                     <p class="muted" data-i18n="start_form_d">Ready to order? Fill out the form.</p>
+                     <a href="#order" class="btn mt16" data-i18n="start_form_btn">Go to Form</a>
+                 </div>
+             </div>
+         </div>
+     </section>
+
+    <!-- Order Section -->
+    <section id="order" class="section">
+        <div class="container">
+            <h2 class="center" data-i18n="order_title">Place Your Order</h2>
+
+                         <!-- FX Rate display -->
+             <div class="card" style="background:var(--sand-50);">
+                 <label for="fx" data-i18n="fx_label">USD to TL Rate:</label>
+                 <div style="margin-top:8px;">
+                     <input id="fx" class="input" type="number" step="0.01" readonly />
+                 </div>
+             </div>
+
+            <div class="grid mt24" style="grid-template-columns:1fr;gap:24px">
+                <!-- Left: Form -->
+                <div class="card">
+                    <h3 data-i18n="cust_title">Customer Information</h3>
+                                         <div class="grid" style="grid-template-columns:1fr;gap:12px">
+                         <div><label data-i18n="full_name">Full Name *</label><input id="name" class="input" required></div>
+                         <div><label data-i18n="email">Email *</label><input id="email" class="input" type="email" required></div>
+                         <div><label data-i18n="city">City *</label><input id="city" class="input" required></div>
+                         <div><label data-i18n="whatsapp">WhatsApp (with country code) *</label><input id="wa" class="input" placeholder="+90 533 325 23 33" required></div>
+                     </div>
+
+                    <!-- Discount Code Section -->
+                    <div class="mt24">
+                        <h3 data-i18n="discount_code">Discount Code</h3>
+                        <div class="discount-section">
+                            <div class="discount-input-group">
+                                <input id="discountCode" class="input" type="text" placeholder="Enter discount code (optional)" maxlength="20">
+                                <button type="button" id="applyDiscount" class="btn btn--ghost">Apply</button>
+                            </div>
+                            <div id="discountMessage" class="discount-message"></div>
+                            <div id="discountDetails" class="discount-details" style="display: none;">
+                                <div class="discount-info">
+                                    <span id="discountDescription"></span>
+                                    <span id="discountValue"></span>
+                                </div>
+                                <button type="button" id="removeDiscount" class="btn btn--ghost btn--small">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="mt24" data-i18n="products">Products</h3>
+                    <div id="items"></div>
+                    <button id="addItem" class="btn btn--ghost mt16" data-i18n="add_item">+ Add Item</button>
+
+                    <h3 class="mt24" data-i18n="notes">Notes</h3>
+                    <textarea id="notes" class="input" rows="4"></textarea>
+                </div>
+
+                <!-- Right: Price -->
+                <aside class="card">
+                    <h3 data-i18n="price_break">Price Breakdown</h3>
+                    <div id="priceLines" class="price-lines"></div>
+                    <button id="submitSheet" class="btn mt16" data-i18n="submit_btn">Submit to JEBLI</button>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Policy + FAQ Section -->
+    <section class="section section--tint">
+        <div class="container">
+            <div class="card center">
+                <h3 data-i18n="pricing_title">Pricing Policy</h3>
+                <ul class="muted" style="text-align:left;max-width:620px;margin:12px auto 0;">
+                    <li data-i18n="pricing_1">Shopping service fee: 15%</li>
+                    <li data-i18n="pricing_2">Shipping: $6 per kg</li>
+                    <li data-i18n="pricing_3">No returns; we verify links before purchase. Fragile/batteries may be restricted.</li>
+                </ul>
+            </div>
+
+                         <h3 class="center mt24" data-i18n="faq_title">Frequently Asked Questions</h3>
+             <div class="faq-grid mt16">
+                 <div class="card faq-card">
+                     <h4 data-i18n="faq_1_q">How long does delivery take?</h4>
+                     <p class="muted" data-i18n="faq_1_a">Typical delivery time is 7 to 10 days from order confirmation.</p>
+                 </div>
+                 <div class="card faq-card">
+                     <h4 data-i18n="faq_2_q">What payment methods do you accept?</h4>
+                     <p class="muted" data-i18n="faq_2_a">We accept cash payments at our office after order confirmation.</p>
+                 </div>
+                 <div class="card faq-card">
+                     <h4 data-i18n="faq_3_q">Can I track my order?</h4>
+                     <p class="muted" data-i18n="faq_3_a">Yes, we provide tracking information once your order ships.</p>
+                 </div>
+                 <div class="card faq-card">
+                     <h4 data-i18n="faq_4_q">What if my item is out of stock?</h4>
+                     <p class="muted" data-i18n="faq_4_a">We'll contact you immediately and offer alternatives or a refund.</p>
+                 </div>
+                 <div class="card faq-card">
+                     <h4 data-i18n="faq_5_q">Do you ship to all cities in Syria?</h4>
+                     <p class="muted" data-i18n="faq_5_a">We deliver to major cities. Contact us for specific locations.</p>
+                 </div>
+                 <div class="card faq-card">
+                     <h4 data-i18n="faq_6_q">What about customs and taxes?</h4>
+                     <p class="muted" data-i18n="faq_6_a">Our pricing includes all fees. No hidden charges.</p>
+                 </div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>JEBLI</h3>
+                    <p data-i18n="footer_description">Making online shopping accessible and convenient for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="quick_links">Quick Links</h4>
+                    <ul>
+                        <li><a href="#home" data-i18n="nav_home">Home</a></li>
+                        <li><a href="shops.html" data-i18n="nav_shops">Shops</a></li>
+                        <li><a href="#how" data-i18n="how_it_works">How it Works</a></li>
+                        <li><a href="#order" data-i18n="order_form">Order Form</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-i18n="contact_info">Contact Info</h4>
+                    <p><a href="mailto:Jebli963.90@gmail.com" class="contact-link">📧 Jebli963.90@gmail.com</a></p>
+                    <p><a href="tel:+905333252333" class="contact-link">📱 +90 533 325 23 33</a></p>
+                    <a href="https://wa.me/905333252333?text=Hello! I would like to learn more about JEBLI services." target="_blank" class="btn btn--whatsapp">
+                        💬 WhatsApp
+                    </a>
+                </div>
+                <div class="footer-section">
+                    <h4>Developed by Fanari Labs</h4>
+                    <button class="fanari-labs-btn" onclick="openFanariLabsPopup()">
+                        <span class="btn-icon">👨‍💻</span>
+                        <span class="btn-text">Click for Contact Info</span>
+                    </button>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="copyright">&copy; 2024 JEBLI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="translations.js"></script>
+    <script src="app.js"></script>
+
+    <!-- Fanari Labs Popup -->
+    <div id="fanariLabsPopup" class="fanari-popup">
+        <div class="fanari-popup-content">
+            <div class="popup-header">
+                <h3 style="color: white;">👨‍💻 Fanari Labs</h3>
+            </div>
+            <div class="popup-body">
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <a href="tel:+904379295163" class="contact-link">+90 437 929 51 63</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <a href="mailto:fanarilabs@gmail.com" class="contact-link">fanarilabs@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">🌐</span>
+                    <a href="https://fanarilabs.com" target="_blank" class="contact-link">fanarilabs.com</a>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <p class="popup-description">AI and web dev agency</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Admin Dashboard - Jebli.co</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Mobile Navigation Toggle -->
+    <div class="mobile-nav-toggle" id="mobileNavToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">Jebli.co</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link active" data-section="dashboard">
+                            <span class="nav-icon">📊</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-section="discounts">
+                            <span class="nav-icon">🎫</span>
+                            Discounts
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-section="discount-usage">
+                            <span class="nav-icon">📊</span>
+                            Discount Analytics
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-section="shops-section">
+                            <span class="nav-icon">🏪</span>
+                            Shops
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-section="orders">
+                            <span class="nav-icon">📦</span>
+                            Orders
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-section="settings">
+                            <span class="nav-icon">⚙️</span>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="adminDashboard.logout()">
+                    <span class="nav-icon">🚪</span>
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="admin-header">
+                <div class="header-left">
+                    <h2 id="sectionTitle">Dashboard</h2>
+                </div>
+                <div class="admin-info">
+                    <span class="admin-name">Admin User</span>
+                    <span class="admin-role">Administrator</span>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="content-section active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🎫</div>
+                            <div class="stat-content">
+                                <h3>Active Discounts</h3>
+                                <div class="stat-number" id="activeDiscountsCount">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏪</div>
+                            <div class="stat-content">
+                                <h3>Total Shops</h3>
+                                <div class="stat-number" id="totalShopsCount">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-content">
+                                <h3>Total Orders</h3>
+                                <div class="stat-number" id="totalOrdersCount">0</div>
+                                <div class="live-indicator" id="ordersLiveIndicator" style="display: none;">
+                                    <span class="pulse"></span> Live
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-content">
+                                <h3>Revenue</h3>
+                                <div class="stat-number" id="totalRevenue">$0</div>
+                                <div class="live-indicator" id="revenueLiveIndicator" style="display: none;">
+                                    <span class="pulse"></span> Live
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <div class="section-header">
+                            <h3>Recent Orders</h3>
+                                                    <button class="btn btn-danger btn-sm" onclick="adminDashboard.resetRevenue()">
+                            💰 Reset Revenue
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="adminDashboard.deleteAllOrders()" style="margin-left: 10px;">
+                            🗑️ Delete All Orders
+                        </button>
+                        </div>
+                        <div class="activity-list" id="recentOrders">
+                            <div class="activity-item">
+                                <span class="activity-text">No recent orders</span>
+                                <span class="activity-time">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Discounts Section -->
+                <section id="discounts" class="content-section">
+                    <div class="section-header">
+                        <h3>Manage Discounts</h3>
+                        <div class="header-actions">
+                                                    <button class="btn btn-primary" onclick="adminDashboard.openDiscountModal()">
+                            <span class="nav-icon">+</span>
+                            Add New Discount
+                        </button>
+                        <button class="btn btn-danger" onclick="adminDashboard.clearAllDiscounts()">
+                            Clear All Discounts
+                        </button>
+                        </div>
+                    </div>
+
+                    <div class="discounts-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Type</th>
+                                    <th>Value</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="discountsTableBody">
+                                <!-- Discounts will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Discount Usage Analytics Section -->
+                <section id="discount-usage" class="content-section">
+                    <div class="content-header">
+                        <h3>Discount Usage Analytics</h3>
+                        <div class="header-actions">
+                            <button class="btn btn-secondary" onclick="adminDashboard.loadDiscountUsage()">
+                                🔄 Refresh Data
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Usage Statistics -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h4>Total Discount Usage</h4>
+                            <div class="stat-value" id="totalDiscountUsage">0</div>
+                            <p>Times discounts were applied</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Total Customer Savings</h4>
+                            <div class="stat-value" id="totalDiscountSavings">$0.00</div>
+                            <p>Total amount saved by customers</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Usage Table -->
+                    <div class="table-container">
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Discount Code</th>
+                                    <th>Customer Email</th>
+                                    <th>Order ID</th>
+                                    <th>Amount Saved</th>
+                                    <th>Date Used</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="discountUsageTableBody">
+                                <!-- Discount usage will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Shops Section -->
+                <section id="shops-section" class="content-section">
+                    <div class="section-header">
+                        <h3>Manage Shops</h3>
+                        <div class="header-actions">
+                            <button class="btn btn-primary" onclick="adminDashboard.openShopModal()">
+                                <span class="nav-icon">+</span>
+                                Add New Shop
+                            </button>
+                            <button class="btn btn-secondary" onclick="adminDashboard.refreshAllShops()">
+                                🔄 Refresh All Shops
+                            </button>
+                            <button class="btn btn-danger" onclick="adminDashboard.clearAllShops()">
+                                Clear All Shops
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="shops-grid">
+                        <!-- Shops will be populated here -->
+                    </div>
+                </section>
+
+                <!-- Orders Section -->
+                <section id="orders" class="content-section">
+                                         <div class="section-header">
+                         <h3>Manage Orders</h3>
+                         <div class="header-actions">
+                             <div class="search-container">
+                                 <input type="text" id="orderSearchInput" placeholder="Search by name or order ID..." class="search-input">
+                                 <button type="button" id="clearSearchBtn" class="clear-search-btn" style="display: none;">✕</button>
+                             </div>
+                             <select id="orderStatusFilter" onchange="adminDashboard.filterOrders()">
+                                 <option value="">All Status</option>
+                                 <option value="Submitted">Submitted</option>
+                                 <option value="Preparing">Preparing</option>
+                                 <option value="Shipped">Shipped</option>
+                                 <option value="Delivered">Delivered</option>
+                                 <option value="Cancelled">Cancelled</option>
+                             </select>
+                         </div>
+                     </div>
+
+                    <div class="orders-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Products</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <!-- Orders will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="content-section">
+                    <div class="section-header">
+                        <h3>Settings</h3>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h4>General Settings</h4>
+                            <div class="setting-item">
+                                <label for="siteName">Site Name</label>
+                                <input type="text" id="siteName" value="Jebli.co">
+                            </div>
+                            <div class="setting-item">
+                                <label for="siteDescription">Site Description</label>
+                                <input type="text" id="siteDescription" value="Making online shopping accessible and convenient for everyone.">
+                            </div>
+                            <div class="setting-item">
+                                <label for="contactEmail">Contact Email</label>
+                                <input type="email" id="contactEmail" value="info@jebli.co">
+                            </div>
+                        </div>
+
+                        <div class="setting-card">
+                            <h4>Shipping Settings</h4>
+                            <div class="setting-item">
+                                <label for="shippingRate">Shipping Rate ($/kg)</label>
+                                <input type="number" id="shippingRate" value="6" step="0.01">
+                            </div>
+                            <div class="setting-item">
+                                <label for="serviceFee">Service Fee (%)</label>
+                                <input type="number" id="serviceFee" value="15" step="0.1">
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h4>Exchange Rate Settings</h4>
+                            <div class="setting-item">
+                                <label for="usdToTlRate">USD to TL Rate</label>
+                                <input type="number" id="usdToTlRate" value="40" step="0.01" min="1">
+                                <small style="color: #64748b; font-size: 12px;">This rate affects all price calculations on the main website</small>
+                            </div>
+                            <div class="setting-item">
+                                <button type="button" class="btn btn-primary" onclick="adminDashboard.updateMainWebsiteRate()">
+                                    Update Main Website Rate
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-card">
+                            <h4>Data Management</h4>
+                            <div class="setting-item">
+                                <button type="button" class="btn btn-warning" onclick="adminDashboard.forceCleanupAllStorage()">
+                                    🧹 Force Cleanup All Storage
+                                </button>
+                                <small style="color: #64748b; font-size: 12px;">Use this if deleted orders reappear after refresh. This will clean up all localStorage locations.</small>
+                            </div>
+                            <div class="setting-item">
+                                <button type="button" class="btn btn-info" onclick="adminDashboard.syncOrdersFromMainWebsite()">
+                                    🔄 Sync Orders from Main Website
+                                </button>
+                                <small style="color: #64748b; font-size: 12px;">Manually sync orders from the main website while respecting deletions.</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Discount Modal -->
+    <div id="discountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="discountModalTitle">Add New Discount</h3>
+                <button class="modal-close" id="closeDiscountModal">&times;</button>
+            </div>
+            <form id="discountForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="discountCode">Discount Code</label>
+                        <input type="text" id="discountCode" required placeholder="e.g., WELCOME10">
+                    </div>
+                    <div class="form-group">
+                        <label for="discountType">Type</label>
+                        <select id="discountType" required>
+                            <option value="percentage">Percentage</option>
+                            <option value="fixed">Fixed Amount</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountValue">Value</label>
+                        <input type="number" id="discountValue" required min="0" step="0.01" placeholder="10">
+                        <span class="value-hint" id="valueHint">%</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountDescription">Description</label>
+                        <textarea id="discountDescription" required placeholder="e.g., 10% off your first order"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="discountMinOrder">Minimum Order Amount ($)</label>
+                        <input type="number" id="discountMinOrder" min="0" step="0.01" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="discountMaxUses">Maximum Uses</label>
+                        <input type="number" id="discountMaxUses" min="0" placeholder="Unlimited">
+                    </div>
+                    <div class="form-group">
+                        <label for="discountExpiry">Expiry Date</label>
+                        <input type="date" id="discountExpiry">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelDiscount">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Discount</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Shop Modal -->
+    <div id="shopModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="shopModalTitle">Add New Shop</h3>
+                <button class="modal-close" id="closeShopModal">&times;</button>
+            </div>
+            <form id="shopForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="shopName">Shop Name</label>
+                        <input type="text" id="shopName" required placeholder="e.g., Nike Store">
+                    </div>
+                    <div class="form-group">
+                        <label for="shopUrl">Shop URL</label>
+                        <input type="url" id="shopUrl" required placeholder="https://www.nike.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="shopLogo">Logo URL</label>
+                        <input type="url" id="shopLogo" placeholder="https://example.com/logo.png">
+                    </div>
+                    <div class="form-group">
+                        <label for="shopCategory">Category</label>
+                        <select id="shopCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="fashion">Fashion</option>
+                            <option value="sport">Sport</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="lingerie">Lingerie</option>
+                            <option value="hijab_clothing">Hijab Clothing</option>
+                            <option value="home">Home</option>
+                            <option value="cosmetics">Cosmetics</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="luxury">Luxury</option>
+                            <option value="kids_fashion">Kids & Baby Fashion</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="shopDescription">Description</label>
+                        <textarea id="shopDescription" placeholder="Brief description of the shop"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="shopStatus">Status</label>
+                        <select id="shopStatus" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelShop">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Shop</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirm Action</h3>
+                <button class="modal-close" onclick="adminDashboard.closeConfirmModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to proceed?</p>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="adminDashboard.closeConfirmModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmAction">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="config.js"></script>
+    <script src="shops.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        // Mobile navigation functionality
+        document.getElementById('mobileNavToggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.getElementById('mobileNavToggle');
+            
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(event.target) && !mobileToggle.contains(event.target)) {
+                    sidebar.classList.remove('show');
+                    mobileToggle.classList.remove('active');
+                }
+            }
+        });
+
+        // Close sidebar when clicking on navigation links on mobile
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('show');
+                    document.getElementById('mobileNavToggle').classList.remove('active');
+                }
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.getElementById('sidebar').classList.remove('show');
+                document.getElementById('mobileNavToggle').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
