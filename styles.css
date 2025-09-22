@@ -469,6 +469,9 @@ p {
   z-index: 1000;
   position: relative;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .mobile-menu-btn span {
@@ -2096,6 +2099,9 @@ a, button, input, select, textarea {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   font-family: var(--heading-font);
   letter-spacing: 0.5px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .lang-dropdown:hover {
