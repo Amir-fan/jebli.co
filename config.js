@@ -1,13 +1,13 @@
 // JEBLI Order Pipeline Configuration
 const JEBLI_CONFIG = {
     // Backend API Configuration
-    API_URL: process.env.JEBLI_API_URL || 'https://script.google.com/macros/s/AKfycbxIuOkOX7pQcv6VCsTEePGR4hkB731_b2kqYxci_3YhoqZTUHu_x9T-ypqR0eqK0pHlJQ/exec',
-    API_KEY: process.env.JEBLI_API_KEY || 'jebli_secret_key_2024_xyz789_secure_hash',
+    API_URL: 'https://script.google.com/macros/s/AKfycbxIuOkOX7pQcv6VCsTEePGR4hkB731_b2kqYxci_3YhoqZTUHu_x9T-ypqR0eqK0pHlJQ/exec',
+    API_KEY: 'jebli_secret_key_2024_xyz789_secure_hash',
     
     // Business Logic Constants
-    DEFAULT_FX_RATE: process.env.JEBLI_DEFAULT_FX_RATE || 39, // TL per USD
-    SHIPPING_PER_KG_USD: process.env.JEBLI_SHIPPING_PER_KG_USD || 6,
-    SERVICE_FEE_RATE: process.env.JEBLI_SERVICE_FEE_RATE || 0.15,
+    DEFAULT_FX_RATE: 39, // TL per USD
+    SHIPPING_PER_KG_USD: 6,
+    SERVICE_FEE_RATE: 0.15,
     
     // Order Status Values
     STATUSES: {
@@ -30,3 +30,6 @@ const JEBLI_CONFIG = {
 
 // Make config globally available
 window.JEBLI_CONFIG = JEBLI_CONFIG;
+
+// Debug logging
+console.log('✅ JEBLI_CONFIG loaded successfully:', JEBLI_CONFIG);

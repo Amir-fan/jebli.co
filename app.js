@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Initializing JEBLI main page...');
     
     // Try to initialize, retry if JEBLI_CONFIG isn't ready yet
-    if (typeof JEBLI_CONFIG === 'undefined') {
+    if (typeof window.JEBLI_CONFIG === 'undefined') {
         console.log('⏳ JEBLI_CONFIG not ready yet, retrying in 100ms...');
         setTimeout(initializeJEBLI, 100);
         return;
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Also try to initialize when window loads (fallback)
 window.addEventListener('load', function() {
     console.log('🌐 Window loaded, checking JEBLI_CONFIG...');
-    if (typeof JEBLI_CONFIG !== 'undefined' && !window.jebliInitialized) {
+    if (typeof window.JEBLI_CONFIG !== 'undefined' && !window.jebliInitialized) {
         console.log('✅ JEBLI_CONFIG found on window load, initializing...');
         window.jebliInitialized = true;
         initializeJEBLI();
@@ -49,13 +49,13 @@ window.addEventListener('load', function() {
 
 // Main initialization function
 function initializeJEBLI() {
-    if (typeof JEBLI_CONFIG === 'undefined') {
+    if (typeof window.JEBLI_CONFIG === 'undefined') {
         console.log('⏳ JEBLI_CONFIG still not ready, retrying in 100ms...');
         setTimeout(initializeJEBLI, 100);
         return;
     }
     
-    console.log('✅ JEBLI_CONFIG loaded:', JEBLI_CONFIG);
+    console.log('✅ JEBLI_CONFIG loaded:', window.JEBLI_CONFIG);
     
     // Update configuration constants from JEBLI_CONFIG
     updateConfigurationFromJEBLIConfig();
@@ -83,10 +83,10 @@ function initializeJEBLI() {
 
 // Update configuration constants from JEBLI_CONFIG
 function updateConfigurationFromJEBLIConfig() {
-    if (typeof JEBLI_CONFIG !== 'undefined') {
-        FX_USD_TO_TL = JEBLI_CONFIG.DEFAULT_FX_RATE;
-        SERVICE_FEE_RATE = JEBLI_CONFIG.SERVICE_FEE_RATE;
-        SHIPPING_PER_KG_USD = JEBLI_CONFIG.SHIPPING_PER_KG_USD;
+    if (typeof window.JEBLI_CONFIG !== 'undefined') {
+        FX_USD_TO_TL = window.JEBLI_CONFIG.DEFAULT_FX_RATE;
+        SERVICE_FEE_RATE = window.JEBLI_CONFIG.SERVICE_FEE_RATE;
+        SHIPPING_PER_KG_USD = window.JEBLI_CONFIG.SHIPPING_PER_KG_USD;
         rates.usdToTl = FX_USD_TO_TL;
         
         console.log('⚙️ Configuration updated from JEBLI_CONFIG:', {
