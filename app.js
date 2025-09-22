@@ -940,9 +940,11 @@ function setupMobileMenu() {
     
     // Close menu function
     function closeMenu() {
+        console.log('Closing mobile menu...');
         mainNav.classList.remove('active');
         mobileMenuBtn.classList.remove('active');
         document.body.style.overflow = '';
+        console.log('Mobile menu closed');
     }
     
     // Open menu
@@ -964,8 +966,12 @@ function setupMobileMenu() {
     }
     
     // Close when clicking nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    console.log('Found nav links:', navLinks.length);
+    navLinks.forEach((link, index) => {
+        console.log(`Nav link ${index}:`, link.href, link.textContent);
+        link.addEventListener('click', function(e) {
+            console.log('Nav link clicked:', link.href);
             closeMenu();
         });
     });
