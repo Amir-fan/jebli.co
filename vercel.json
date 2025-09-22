@@ -12,14 +12,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "env": {
-    "JEBLI_API_URL": "@jebli_api_url",
-    "JEBLI_API_KEY": "@jebli_api_key",
-    "JEBLI_DEFAULT_FX_RATE": "@jebli_default_fx_rate",
-    "JEBLI_SHIPPING_PER_KG_USD": "@jebli_shipping_per_kg_usd",
-    "JEBLI_SERVICE_FEE_RATE": "@jebli_service_fee_rate",
-    "JEBLI_EMAIL_FROM": "@jebli_email_from",
-    "JEBLI_EMAIL_REPLY_TO": "@jebli_email_reply_to"
-  }
+  ]
 }
