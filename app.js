@@ -164,8 +164,17 @@ function handleLanguageChange(event) {
         document.body.style.overflow = '';
     }
     
+    // Reset mobile menu setup flag to allow re-setup
+    if (mobileMenuBtn) {
+        mobileMenuBtn.removeAttribute('data-mobile-menu-setup');
+    }
+    
     if (typeof window.changeLanguage === 'function') {
         window.changeLanguage(newLang);
+        // Re-setup mobile menu after language change
+        setTimeout(() => {
+            setupMobileMenu();
+        }, 100);
     } else {
         // Fallback: try to reload the page with the new language
         localStorage.setItem('jebli-language', newLang);
@@ -940,11 +949,9 @@ function setupMobileMenu() {
     
     // Close menu function
     function closeMenu() {
-        console.log('Closing mobile menu...');
         mainNav.classList.remove('active');
         mobileMenuBtn.classList.remove('active');
         document.body.style.overflow = '';
-        console.log('Mobile menu closed');
     }
     
     // Open menu
@@ -966,12 +973,8 @@ function setupMobileMenu() {
     }
     
     // Close when clicking nav links
-    const navLinks = document.querySelectorAll('.nav-link');
-    console.log('Found nav links:', navLinks.length);
-    navLinks.forEach((link, index) => {
-        console.log(`Nav link ${index}:`, link.href, link.textContent);
-        link.addEventListener('click', function(e) {
-            console.log('Nav link clicked:', link.href);
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
             closeMenu();
         });
     });
