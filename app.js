@@ -923,61 +923,61 @@ function setupMobileMenu() {
     const mobileMenuClose = document.getElementById('mobileMenuClose');
     const mainNav = document.getElementById('mainNav');
     
-    if (mobileMenuBtn && mainNav) {
-        // Ensure button is clickable
-        mobileMenuBtn.style.pointerEvents = 'auto';
-        mobileMenuBtn.style.cursor = 'pointer';
-        
-        mobileMenuBtn.addEventListener('click', function(e) {
+    if (!mobileMenuBtn || !mainNav) return;
+    
+    // Open menu
+    mobileMenuBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        mainNav.classList.add('active');
+        mobileMenuBtn.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    
+    // Close menu
+    function closeMenu() {
+        mainNav.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Close button
+    if (mobileMenuClose) {
+        mobileMenuClose.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            openMobileMenu();
-        });
-        
-        // Close menu when clicking close button
-        if (mobileMenuClose) {
-            mobileMenuClose.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                closeMobileMenu();
-            });
-        }
-        
-        // Close menu when clicking on nav links (but let them navigate)
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Only close menu if it's not an external link
-                if (link.getAttribute('href') && !link.getAttribute('href').startsWith('http')) {
-                    closeMobileMenu();
-                }
-            });
-        });
-        
-        // Close menu when clicking outside (but not on language dropdown)
-        document.addEventListener('click', (e) => {
-            const isLanguageDropdown = e.target.closest('.language-selector');
-            const isMobileMenuBtn = mobileMenuBtn.contains(e.target);
-            const isMobileMenu = mainNav.contains(e.target);
-            
-            if (!isMobileMenuBtn && !isMobileMenu && !isLanguageDropdown) {
-                closeMobileMenu();
-            }
-        });
-        
-        // Close menu on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeMobileMenu();
-            }
-        });
-        
-        // Close menu on window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                closeMobileMenu();
-            }
+            closeMenu();
         });
     }
+    
+    // Close when clicking nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+            closeMenu();
+        });
+    });
+    
+    // Close when clicking outside (but not on language dropdown)
+    document.addEventListener('click', function(e) {
+        const isLanguageDropdown = e.target.closest('.language-selector');
+        if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && !isLanguageDropdown) {
+            closeMenu();
+        }
+    });
+    
+    // Close on escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeMenu();
+        }
+    });
+    
+    // Close on resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            closeMenu();
+        }
+    });
 }
 
 // Setup discount code functionality
@@ -1184,31 +1184,6 @@ function trackDiscountUsage(code, trackingId, discountAmount) {
     console.log('💰 Discount usage tracked:', usage);
 }
 
-// Open mobile menu
-function openMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mainNav = document.getElementById('mainNav');
-    const body = document.body;
-    
-    if (!mobileMenuBtn || !mainNav) return;
-    
-    mobileMenuBtn.classList.add('active');
-    mainNav.classList.add('active');
-    body.style.overflow = 'hidden';
-}
-
-// Close mobile menu
-function closeMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mainNav = document.getElementById('mainNav');
-    const body = document.body;
-    
-    if (!mobileMenuBtn || !mainNav) return;
-    
-    mobileMenuBtn.classList.remove('active');
-    mainNav.classList.remove('active');
-    body.style.overflow = '';
-}
 
 // ===== MOBILE OPTIMIZATION UTILITIES =====
 
