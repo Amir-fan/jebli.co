@@ -1,0 +1,13 @@
+{
+  "name": "jebli-co",
+  "version": "1.0.0",
+  "description": "JEBLI - Turkish shopping service for Syria",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site - no start needed'"
+  },
+  "keywords": ["shopping", "turkey", "syria", "ecommerce"],
+  "author": "JEBLI",
+  "license": "MIT"
+}
