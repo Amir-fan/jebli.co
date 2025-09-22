@@ -155,6 +155,15 @@ function setupEventListeners() {
 function handleLanguageChange(event) {
     const newLang = event.target.value;
     
+    // Close mobile menu before language change
+    const mainNav = document.getElementById('mainNav');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    if (mainNav && mobileMenuBtn) {
+        mainNav.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
     if (typeof window.changeLanguage === 'function') {
         window.changeLanguage(newLang);
     } else {
@@ -925,6 +934,17 @@ function setupMobileMenu() {
     
     if (!mobileMenuBtn || !mainNav) return;
     
+    // Prevent duplicate setup
+    if (mobileMenuBtn.hasAttribute('data-mobile-menu-setup')) return;
+    mobileMenuBtn.setAttribute('data-mobile-menu-setup', 'true');
+    
+    // Close menu function
+    function closeMenu() {
+        mainNav.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
     // Open menu
     mobileMenuBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -933,13 +953,6 @@ function setupMobileMenu() {
         mobileMenuBtn.classList.add('active');
         document.body.style.overflow = 'hidden';
     });
-    
-    // Close menu
-    function closeMenu() {
-        mainNav.classList.remove('active');
-        mobileMenuBtn.classList.remove('active');
-        document.body.style.overflow = '';
-    }
     
     // Close button
     if (mobileMenuClose) {

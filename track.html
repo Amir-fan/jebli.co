@@ -55,7 +55,7 @@
     <!-- Tracking Section -->
     <section class="section">
         <div class="container">
-            <div class="tracking-container">
+        <div class="tracking-container">
                 <!-- Search Form -->
                 <div class="card tracking-card">
                     <div class="tracking-header">
@@ -71,8 +71,8 @@
                             <span class="btn-icon">🔍</span>
                             <span data-i18n="track_form_button">Track Order</span>
                         </button>
-                    </div>
                 </div>
+            </div>
 
                 <!-- Results Section -->
                 <div id="trackingResults" class="tracking-results" style="display: none;">
@@ -84,10 +84,10 @@
                                 <div class="tracking-id-display">
                                     <span class="tracking-id-label" data-i18n="track_tracking_id">Tracking ID:</span>
                                     <span class="tracking-id-value" id="trackingIdDisplay"></span>
-                                    <button class="copy-tracking-btn" onclick="copyTrackingId()" title="Copy tracking ID">
+                            <button class="copy-tracking-btn" onclick="copyTrackingId()" title="Copy tracking ID">
                                         <span class="copy-icon">📋</span>
-                                    </button>
-                                </div>
+                            </button>
+            </div>
                             </div>
                             <div class="order-status-display" id="orderStatusDisplay">
                                 <!-- Status will be populated here -->
@@ -135,8 +135,8 @@
                             <div class="detail-content" id="shippingInfo">
                                 <!-- Shipping info will be populated here -->
                             </div>
-                        </div>
-                    </div>
+        </div>
+            </div>
                 </div>
                 
                 <!-- No Results Message -->
@@ -146,7 +146,7 @@
                         <h3 data-i18n="track_no_results_title">Order Not Found</h3>
                         <p class="muted" data-i18n="track_no_results_message">No order found with the provided tracking ID. Please check your ID and try again.</p>
                         <button class="btn btn--ghost" onclick="resetTracking()" data-i18n="track_no_results_try_again">Try Again</button>
-                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -363,11 +363,11 @@
                     <span class="info-value">
                         <a href="https://wa.me/${order.whatsapp?.replace(/[^0-9]/g, '')}" target="_blank" class="info-link">${order.whatsapp || 'N/A'}</a>
                     </span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">City:</span>
+                        </div>
+                    <div class="info-row">
+                        <span class="info-label">City:</span>
                     <span class="info-value">${order.city || 'N/A'}</span>
-                </div>
+                        </div>
                 ${order.customer_notes ? `
                     <div class="info-row">
                         <span class="info-label">Notes:</span>
@@ -392,7 +392,7 @@
                 <div class="summary-row">
                     <span class="summary-label">Items Count:</span>
                     <span class="summary-value">${items.length} item(s)</span>
-                </div>
+                    </div>
                 <div class="summary-row">
                     <span class="summary-label">Total Weight:</span>
                     <span class="summary-value">${totalWeight.toFixed(2)} kg</span>
@@ -443,7 +443,7 @@
                             <span class="item-price">${parseFloat(item.priceTL || 0).toFixed(2)} TL</span>
                             <span class="item-weight">${parseFloat(item.weightKg || 0).toFixed(2)} kg</span>
                         </div>
-                    </div>
+                        </div>
                 </div>
             `).join('');
             
@@ -477,14 +477,14 @@
                     <div class="info-row">
                         <span class="info-label">Delivery Date:</span>
                         <span class="info-value">${new Date().toLocaleDateString()}</span>
-                    </div>
+                        </div>
                 `;
             } else {
                 shippingDetails = `
                     <div class="info-row">
                         <span class="info-label">Status:</span>
                         <span class="info-value pending">Preparing for Shipment</span>
-                    </div>
+                        </div>
                     <div class="info-row">
                         <span class="info-label">Next Step:</span>
                         <span class="info-value">Order processing</span>
@@ -735,8 +735,7 @@
             if (mobileMenuBtn && mainNav) {
                 mobileMenuBtn.classList.add('active');
                 mainNav.classList.add('active');
-                body.style.overflow = 'hidden';
-                console.log('📱 Mobile menu opened');
+                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -748,8 +747,7 @@
             if (mobileMenuBtn && mainNav) {
                 mobileMenuBtn.classList.remove('active');
                 mainNav.classList.remove('active');
-                body.style.overflow = '';
-                console.log('📱 Mobile menu closed');
+                document.body.style.overflow = '';
             }
         }
 
