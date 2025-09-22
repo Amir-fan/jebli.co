@@ -466,12 +466,14 @@ p {
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 1000;
+  z-index: 10001;
   position: relative;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   user-select: none;
+  min-width: 30px;
+  min-height: 25px;
 }
 
 .mobile-menu-btn span {
@@ -510,8 +512,11 @@ p {
   cursor: pointer;
   font-size: 20px;
   line-height: 1;
-  z-index: 1002;
+  z-index: 10001;
   transition: background-color 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
 .mobile-menu-close:hover {
@@ -565,7 +570,7 @@ p {
     justify-content: center;
     align-items: center;
     gap: 24px;
-    z-index: 999;
+    z-index: 10000;
     transition: left 0.3s ease;
     padding: 80px 20px 20px;
     box-sizing: border-box;
@@ -573,6 +578,7 @@ p {
   
   .nav.active {
     left: 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   }
   
   .mobile-menu-close {

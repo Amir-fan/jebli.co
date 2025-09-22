@@ -155,9 +155,13 @@ function setupEventListeners() {
 function handleLanguageChange(event) {
     const newLang = event.target.value;
     console.log(`🔄 Language change requested: ${newLang}`);
+    console.log(`🔍 changeLanguage function available: ${typeof window.changeLanguage === 'function'}`);
+    console.log(`🔍 currentLanguage: ${window.currentLanguage}`);
     
     if (typeof window.changeLanguage === 'function') {
+        console.log('✅ Calling changeLanguage function...');
         window.changeLanguage(newLang);
+        console.log('✅ changeLanguage function called');
     } else {
         console.error('❌ changeLanguage function not found! Translations.js may not be loaded properly.');
         // Fallback: try to reload the page with the new language
@@ -1195,13 +1199,25 @@ function openMobileMenu() {
     const mainNav = document.getElementById('mainNav');
     const body = document.body;
     
-    if (!mobileMenuBtn || !mainNav) return;
+    console.log('🔍 Opening mobile menu - elements:', {
+        mobileMenuBtn: !!mobileMenuBtn,
+        mainNav: !!mainNav,
+        body: !!body
+    });
+    
+    if (!mobileMenuBtn || !mainNav) {
+        console.error('❌ Missing mobile menu elements');
+        return;
+    }
     
     mobileMenuBtn.classList.add('active');
     mainNav.classList.add('active');
     body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    console.log('📱 Mobile menu opened');
+    console.log('📱 Mobile menu opened - classes added:', {
+        btnActive: mobileMenuBtn.classList.contains('active'),
+        navActive: mainNav.classList.contains('active')
+    });
 }
 
 // Close mobile menu
