@@ -613,18 +613,10 @@ let currentDir = 'ltr';
 
 // Function to change language
 function changeLanguage(lang) {
-    console.log(`🔄 changeLanguage called with: ${lang}`);
-    console.log(`🔍 Current language: ${currentLanguage}`);
-    
-    if (lang === currentLanguage) {
-        console.log('⚠️ Language is already set to:', lang);
-        return;
-    }
+    if (lang === currentLanguage) return;
     
     currentLanguage = lang;
     currentDir = lang === 'ar' ? 'rtl' : 'ltr';
-    
-    console.log(`✅ Language changed to: ${currentLanguage}, Direction: ${currentDir}`);
     
     // Update document
     document.documentElement.setAttribute('dir', currentDir);
@@ -634,22 +626,16 @@ function changeLanguage(lang) {
     localStorage.setItem('jebli-language', lang);
     
     // Update all translations
-    console.log('🔄 Updating all translations...');
     updateAllTranslations();
     
     // Ensure language selector dropdown is synced
-    console.log('🔄 Syncing language selector...');
     syncLanguageSelector();
-    
-    console.log('✅ Language change complete');
 }
 
 // Function to update all translations
 function updateAllTranslations() {
     const elements = document.querySelectorAll('[data-i18n]');
-    console.log(`🔍 Found ${elements.length} elements with data-i18n attributes`);
     
-    let translatedCount = 0;
     elements.forEach(element => {
         const key = element.getAttribute('data-i18n');
         const translation = I18N[currentLanguage][key];
@@ -660,13 +646,8 @@ function updateAllTranslations() {
             } else {
                 element.textContent = translation;
             }
-            translatedCount++;
-        } else {
-            console.warn(`⚠️ Translation missing for key: ${key}`);
         }
     });
-    
-    console.log(`✅ Translated ${translatedCount} elements`);
     
     // Handle placeholder translations
     const placeholderElements = document.querySelectorAll('[data-i18n-placeholder]');
@@ -699,10 +680,7 @@ function updateAllTranslations() {
 function syncLanguageSelector() {
     const langSelect = document.getElementById('langSelect');
     if (langSelect && currentLanguage) {
-        console.log(`🔄 Syncing language selector to: ${currentLanguage}`);
         langSelect.value = currentLanguage;
-    } else {
-        console.log(`❌ Language selector sync failed - langSelect: ${!!langSelect}, currentLanguage: ${currentLanguage}`);
     }
 }
 

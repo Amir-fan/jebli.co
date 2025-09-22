@@ -154,16 +154,10 @@ function setupEventListeners() {
 // Language functionality
 function handleLanguageChange(event) {
     const newLang = event.target.value;
-    console.log(`🔄 Language change requested: ${newLang}`);
-    console.log(`🔍 changeLanguage function available: ${typeof window.changeLanguage === 'function'}`);
-    console.log(`🔍 currentLanguage: ${window.currentLanguage}`);
     
     if (typeof window.changeLanguage === 'function') {
-        console.log('✅ Calling changeLanguage function...');
         window.changeLanguage(newLang);
-        console.log('✅ changeLanguage function called');
     } else {
-        console.error('❌ changeLanguage function not found! Translations.js may not be loaded properly.');
         // Fallback: try to reload the page with the new language
         localStorage.setItem('jebli-language', newLang);
         window.location.reload();
@@ -929,12 +923,6 @@ function setupMobileMenu() {
     const mobileMenuClose = document.getElementById('mobileMenuClose');
     const mainNav = document.getElementById('mainNav');
     
-    console.log('🔍 Mobile menu elements:', {
-        mobileMenuBtn: !!mobileMenuBtn,
-        mobileMenuClose: !!mobileMenuClose,
-        mainNav: !!mainNav
-    });
-    
     if (mobileMenuBtn && mainNav) {
         // Ensure button is clickable
         mobileMenuBtn.style.pointerEvents = 'auto';
@@ -943,7 +931,6 @@ function setupMobileMenu() {
         mobileMenuBtn.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('📱 Mobile menu button clicked');
             openMobileMenu();
         });
         
@@ -952,19 +939,27 @@ function setupMobileMenu() {
             mobileMenuClose.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('📱 Mobile menu close button clicked');
                 closeMobileMenu();
             });
         }
         
-        // Close menu when clicking on nav links
+        // Close menu when clicking on nav links (but let them navigate)
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeMobileMenu);
+            link.addEventListener('click', function(e) {
+                // Only close menu if it's not an external link
+                if (link.getAttribute('href') && !link.getAttribute('href').startsWith('http')) {
+                    closeMobileMenu();
+                }
+            });
         });
         
-        // Close menu when clicking outside
+        // Close menu when clicking outside (but not on language dropdown)
         document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mainNav.contains(e.target)) {
+            const isLanguageDropdown = e.target.closest('.language-selector');
+            const isMobileMenuBtn = mobileMenuBtn.contains(e.target);
+            const isMobileMenu = mainNav.contains(e.target);
+            
+            if (!isMobileMenuBtn && !isMobileMenu && !isLanguageDropdown) {
                 closeMobileMenu();
             }
         });
@@ -982,10 +977,6 @@ function setupMobileMenu() {
                 closeMobileMenu();
             }
         });
-        
-        console.log('✅ Mobile menu setup complete');
-    } else {
-        console.log('❌ Mobile menu elements not found');
     }
 }
 
@@ -1199,25 +1190,11 @@ function openMobileMenu() {
     const mainNav = document.getElementById('mainNav');
     const body = document.body;
     
-    console.log('🔍 Opening mobile menu - elements:', {
-        mobileMenuBtn: !!mobileMenuBtn,
-        mainNav: !!mainNav,
-        body: !!body
-    });
-    
-    if (!mobileMenuBtn || !mainNav) {
-        console.error('❌ Missing mobile menu elements');
-        return;
-    }
+    if (!mobileMenuBtn || !mainNav) return;
     
     mobileMenuBtn.classList.add('active');
     mainNav.classList.add('active');
-    body.style.overflow = 'hidden'; // Prevent background scrolling
-    
-    console.log('📱 Mobile menu opened - classes added:', {
-        btnActive: mobileMenuBtn.classList.contains('active'),
-        navActive: mainNav.classList.contains('active')
-    });
+    body.style.overflow = 'hidden';
 }
 
 // Close mobile menu
@@ -1230,9 +1207,7 @@ function closeMobileMenu() {
     
     mobileMenuBtn.classList.remove('active');
     mainNav.classList.remove('active');
-    body.style.overflow = ''; // Restore scrolling
-    
-    console.log('📱 Mobile menu closed');
+    body.style.overflow = '';
 }
 
 // ===== MOBILE OPTIMIZATION UTILITIES =====
