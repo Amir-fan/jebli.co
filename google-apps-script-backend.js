@@ -7,6 +7,9 @@ const CONFIG = {
   API_KEY: 'jebli_secret_key_2024_xyz789_secure_hash',
   EMAIL_FROM: 'JEBLI Orders <Jebli963.90@gmail.com>',
   EMAIL_REPLY_TO: 'Jebli963.90@gmail.com',
+  WEBSITE_URL: 'https://jebli.shop',
+  CONTACT_EMAIL: 'Jebli963.90@gmail.com',
+  CONTACT_PHONE: '+90 533 325 23 33',
   EMAIL_SUBJECTS: {
     SUBMITTED: '🎉 Your JEBLI Order Has Been Confirmed! #{tracking_id}',
     PREPARING: '📦 Your JEBLI Order is Being Prepared! #{tracking_id}',
@@ -222,16 +225,16 @@ function handleNewOrder(data) {
     });
     
          console.log('🌐 Order locale received:', data.locale);
-     sendOrderEmail(data.email, 'Submitted', trackingId, orderDataForEmail, data.locale);
+    sendOrderEmail(data.email, 'Submitted', trackingId, orderDataForEmail, data.locale);
      
      // Send admin notification email for new order
      sendAdminNotification(trackingId, orderDataForEmail);
-     
-     return {
-       ok: true,
-       tracking_id: trackingId,
-       message: 'Order created successfully'
-     };
+    
+    return {
+      ok: true,
+      tracking_id: trackingId,
+      message: 'Order created successfully'
+    };
     
   } catch (error) {
     return { ok: false, error: 'Failed to create order: ' + error.toString() };
@@ -533,20 +536,51 @@ function generateEnglishEmailBody(status, trackingId, orderData) {
       break;
   }
   
-  // Essential order details only
-  body += `📊 ORDER SUMMARY\n`;
+  // Detailed order information
+  body += `📊 ORDER DETAILS\n`;
   body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
   body += `🆔 Tracking ID: ${trackingId}\n`;
-  body += `💰 Total: $${parseFloat(orderData.total_usd || orderData.totalUSD || 0).toFixed(2)}\n`;
-  body += `📦 Items: ${orderData.items ? orderData.items.length : 0} item(s)\n`;
-  body += `🏙️ City: ${orderData.city}\n\n`;
+  body += `📅 Order Date: ${new Date().toLocaleDateString()}\n`;
+  body += `🏙️ Delivery City: ${orderData.city}\n\n`;
+  
+  // Order items with details
+  if (orderData.items && orderData.items.length > 0) {
+    body += `📦 ORDER ITEMS\n`;
+    body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    orderData.items.forEach((item, index) => {
+      body += `${index + 1}. ${item.url || 'Product URL'}\n`;
+      if (item.size) body += `   Size: ${item.size}\n`;
+      if (item.color) body += `   Color: ${item.color}\n`;
+      if (item.priceTL) body += `   Price: ${item.priceTL} TL\n`;
+      if (item.weightKg) body += `   Weight: ${item.weightKg} kg\n`;
+      if (item.qty) body += `   Quantity: ${item.qty}\n`;
+      body += `\n`;
+    });
+  }
+  
+  // Price breakdown
+  const subtotalTL = orderData.items ? orderData.items.reduce((sum, item) => sum + (parseFloat(item.priceTL || 0) * (parseInt(item.qty || 1))), 0) : 0;
+  const subtotalUSD = parseFloat(subtotalTL / 40.5); // Using current exchange rate
+  const serviceFee = parseFloat(subtotalUSD * 0.15);
+  const totalWeight = orderData.items ? orderData.items.reduce((sum, item) => sum + (parseFloat(item.weightKg || 0)), 0) : 0;
+  const shipping = parseFloat(totalWeight * 6);
+  const totalUSD = parseFloat(subtotalUSD + serviceFee + shipping);
+  
+  body += `💰 PRICE BREAKDOWN\n`;
+    body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  body += `💵 Subtotal: $${subtotalUSD.toFixed(2)}\n`;
+  body += `⚙️ Service Fee (15%): $${serviceFee.toFixed(2)}\n`;
+  body += `🚚 Shipping ($${totalWeight.toFixed(1)}kg × $6): $${shipping.toFixed(2)}\n`;
+  body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  body += `💎 Total: $${totalUSD.toFixed(2)}\n\n`;
   
   // Contact info
   body += `📞 NEED HELP?\n`;
   body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-  body += `📧 Email: info@jebli.co\n`;
-  body += `📱 WhatsApp: +90 533 325 23 33\n`;
-  body += `🌐 Track: https://jebli.co/track.html\n\n`;
+  body += `📧 Email: ${CONFIG.CONTACT_EMAIL}\n`;
+  body += `📱 WhatsApp: ${CONFIG.CONTACT_PHONE}\n`;
+  body += `🌐 Track: ${CONFIG.WEBSITE_URL}/track.html\n`;
+  body += `🌐 Website: ${CONFIG.WEBSITE_URL}\n\n`;
   
   body += `Thank you for choosing JEBLI!\n`;
   body += `The JEBLI Team`;
@@ -584,20 +618,51 @@ function generateArabicEmailBody(status, trackingId, orderData) {
       break;
   }
   
-  // Essential order details only
-  body += `📊 ملخص الطلب\n`;
+  // Detailed order information
+  body += `📊 تفاصيل الطلب\n`;
   body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
   body += `🆔 رقم التتبع: ${trackingId}\n`;
-  body += `💰 الإجمالي: $${parseFloat(orderData.total_usd || orderData.totalUSD || 0).toFixed(2)}\n`;
-  body += `📦 العناصر: ${orderData.items ? orderData.items.length : 0} عنصر(ات)\n`;
-  body += `🏙️ المدينة: ${orderData.city}\n\n`;
+  body += `📅 تاريخ الطلب: ${new Date().toLocaleDateString()}\n`;
+  body += `🏙️ مدينة التسليم: ${orderData.city}\n\n`;
+  
+  // Order items with details
+  if (orderData.items && orderData.items.length > 0) {
+    body += `📦 عناصر الطلب\n`;
+    body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+    orderData.items.forEach((item, index) => {
+      body += `${index + 1}. ${item.url || 'رابط المنتج'}\n`;
+      if (item.size) body += `   المقاس: ${item.size}\n`;
+      if (item.color) body += `   اللون: ${item.color}\n`;
+      if (item.priceTL) body += `   السعر: ${item.priceTL} ليرة تركية\n`;
+      if (item.weightKg) body += `   الوزن: ${item.weightKg} كيلو\n`;
+      if (item.qty) body += `   الكمية: ${item.qty}\n`;
+      body += `\n`;
+    });
+  }
+  
+  // Price breakdown
+  const subtotalTL = orderData.items ? orderData.items.reduce((sum, item) => sum + (parseFloat(item.priceTL || 0) * (parseInt(item.qty || 1))), 0) : 0;
+  const subtotalUSD = parseFloat(subtotalTL / 40.5); // Using current exchange rate
+  const serviceFee = parseFloat(subtotalUSD * 0.15);
+  const totalWeight = orderData.items ? orderData.items.reduce((sum, item) => sum + (parseFloat(item.weightKg || 0)), 0) : 0;
+  const shipping = parseFloat(totalWeight * 6);
+  const totalUSD = parseFloat(subtotalUSD + serviceFee + shipping);
+  
+  body += `💰 تفصيل الأسعار\n`;
+    body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  body += `💵 المجموع الفرعي: $${subtotalUSD.toFixed(2)}\n`;
+  body += `⚙️ رسوم الخدمة (15%): $${serviceFee.toFixed(2)}\n`;
+  body += `🚚 الشحن ($${totalWeight.toFixed(1)}كيلو × $6): $${shipping.toFixed(2)}\n`;
+  body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+  body += `💎 الإجمالي: $${totalUSD.toFixed(2)}\n\n`;
   
   // Contact info
   body += `📞 تحتاج مساعدة؟\n`;
   body += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-  body += `📧 البريد الإلكتروني: info@jebli.co\n`;
-  body += `📱 واتساب: +90 533 325 23 33\n`;
-  body += `🌐 التتبع: https://jebli.co/track.html\n\n`;
+  body += `📧 البريد الإلكتروني: ${CONFIG.CONTACT_EMAIL}\n`;
+  body += `📱 واتساب: ${CONFIG.CONTACT_PHONE}\n`;
+  body += `🌐 التتبع: ${CONFIG.WEBSITE_URL}/track.html\n`;
+  body += `🌐 الموقع: ${CONFIG.WEBSITE_URL}\n\n`;
   
   body += `شكراً لاختيارك جبلي!\n`;
   body += `فريق جبلي`;
@@ -887,9 +952,9 @@ function convertToHtml(textBody) {
              <p style="font-size: 16px; font-weight: 700; color: #f1f5f9; margin-bottom: 10px;">The JEBLI Team</p>
              <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 15px;">🇹🇷 → 🇸🇾 Making Turkish shopping accessible in Syria</p>
              <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #64748b;">
-                 <p style="font-size: 12px; color: #94a3b8; margin: 5px 0;">📧 support@jebli.co</p>
-                 <p style="font-size: 12px; color: #94a3b8; margin: 5px 0;">📱 +90 437 929 51 63</p>
-                 <p style="font-size: 12px; color: #94a3b8; margin: 5px 0;">🌐 jebli.co</p>
+                 <p style="font-size: 12px; color: #94a3b8; margin: 5px 0;">📧 ${CONFIG.CONTACT_EMAIL}</p>
+                 <p style="font-size: 12px; color: #94a3b8; margin: 5px 0;">📱 ${CONFIG.CONTACT_PHONE}</p>
+                 <p style="font-size: 12px; color: #94a3b8; margin: 5px 0;">🌐 ${CONFIG.WEBSITE_URL}</p>
              </div>
         </div>
     </div>
@@ -961,7 +1026,7 @@ function generateAdminNotificationBody(trackingId, orderData) {
   body += `✅ Update status in admin dashboard\n`;
   body += `📧 Reply to: ${orderData.email}\n\n`;
   
-  body += `🌐 Admin: jebli.co/admin`;
+  body += `🌐 Admin: ${CONFIG.WEBSITE_URL}/admin`;
   
   return body;
 }
@@ -1201,10 +1266,10 @@ function convertAdminNotificationToHtml(textBody) {
  `;
  
    return html;
- }
- 
- // Handle CORS preflight requests
- function doOptions(e) {
-   return ContentService.createTextOutput('')
-     .setMimeType(ContentService.MimeType.TEXT);
- }
+}
+
+// Handle CORS preflight requests
+function doOptions(e) {
+  return ContentService.createTextOutput('')
+    .setMimeType(ContentService.MimeType.TEXT);
+}
