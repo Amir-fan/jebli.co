@@ -254,7 +254,7 @@ function addProductItem() {
         <div class="product-grid">
             <div>
                 <label>Product URL</label>
-                <input type="url" class="input" placeholder="https://..." oninput="updateItem(${itemIndex}, 'url', this.value)">
+                <input type="url" class="input" placeholder="https://..." oninput="console.log('URL input changed:', this.value); updateItem(${itemIndex}, 'url', this.value)">
             </div>
             <div>
                 <label>Size</label>
@@ -266,7 +266,7 @@ function addProductItem() {
             </div>
             <div>
                 <label>Price (TL)</label>
-                <input type="number" class="input" step="0.01" min="0" oninput="updateItem(${itemIndex}, 'priceTL', parseFloat(this.value) || 0)">
+                <input type="number" class="input" step="0.01" min="0" oninput="console.log('Price input changed:', this.value); updateItem(${itemIndex}, 'priceTL', parseFloat(this.value) || 0)">
             </div>
             <div>
                 <label>Weight (kg)</label>
@@ -280,7 +280,7 @@ function addProductItem() {
     `;
     
     itemsContainer.appendChild(productItem);
-    items.push({
+    const newItem = {
         id: `item-${Date.now()}-${itemIndex}`, // Generate unique ID
         url: '',
         size: '',
@@ -288,7 +288,12 @@ function addProductItem() {
         priceTL: 0,
         weightKg: 0,
         qty: 1
-    });
+    };
+    
+    items.push(newItem);
+    
+    console.log('➕ Product item added:', newItem);
+    console.log('📊 Items array after adding:', items);
     
     recalculateTotals();
     console.log('➕ Product item added, total items:', items.length);
@@ -304,6 +309,9 @@ function removeProductItem(index) {
     recalculateTotals();
     console.log('➖ Product item removed');
 }
+
+// Make removeProductItem globally available
+window.removeProductItem = removeProductItem;
 
 function updateProductItemNumbers() {
     const productItems = document.querySelectorAll('.product-item');
@@ -329,8 +337,13 @@ function updateItem(index, field, value) {
     }
 }
 
+// Make updateItem globally available
+window.updateItem = updateItem;
+
 function addInitialProductItem() {
+    console.log('🔄 Adding initial product item...');
     addProductItem();
+    console.log('✅ Initial product item added. Items array:', items);
 }
 
 // Rate management
