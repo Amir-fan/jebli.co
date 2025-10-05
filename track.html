@@ -248,6 +248,7 @@
 
                 if (data.ok && data.order) {
                     console.log('✅ Order found:', data.order);
+                    console.log('🔍 Order whatsapp type:', typeof data.order.whatsapp, 'value:', data.order.whatsapp);
                     displayOrderDetails(data.order);
                     document.getElementById('trackingResults').style.display = 'block';
                     document.getElementById('noResults').style.display = 'none';
@@ -346,36 +347,44 @@
 
         // Display customer information
         function displayCustomerInfo(order) {
-            const customerInfo = document.getElementById('customerInfo');
-            
-            customerInfo.innerHTML = `
-                <div class="info-row">
-                    <span class="info-label">Name:</span>
-                    <span class="info-value">${order.name || 'N/A'}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Email:</span>
-                    <span class="info-value">
-                        <a href="mailto:${order.email}" class="info-link">${order.email || 'N/A'}</a>
-                    </span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">WhatsApp:</span>
-                    <span class="info-value">
-                        <a href="https://wa.me/${order.whatsapp?.replace(/[^0-9]/g, '')}" target="_blank" class="info-link">${order.whatsapp || 'N/A'}</a>
-                    </span>
-                        </div>
+            try {
+                console.log('🔍 Displaying customer info for order:', order);
+                const customerInfo = document.getElementById('customerInfo');
+                
+                customerInfo.innerHTML = `
                     <div class="info-row">
-                        <span class="info-label">City:</span>
-                    <span class="info-value">${order.city || 'N/A'}</span>
-                        </div>
-                ${order.customer_notes ? `
-                    <div class="info-row">
-                        <span class="info-label">Notes:</span>
-                        <span class="info-value notes">${order.customer_notes}</span>
+                        <span class="info-label">Name:</span>
+                        <span class="info-value">${order.name || 'N/A'}</span>
                     </div>
-                ` : ''}
-            `;
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">
+                            <a href="mailto:${order.email}" class="info-link">${order.email || 'N/A'}</a>
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">WhatsApp:</span>
+                        <span class="info-value">
+                            <a href="https://wa.me/${String(order.whatsapp || '').replace(/[^0-9]/g, '')}" target="_blank" class="info-link">${order.whatsapp || 'N/A'}</a>
+                        </span>
+                            </div>
+                        <div class="info-row">
+                            <span class="info-label">City:</span>
+                        <span class="info-value">${order.city || 'N/A'}</span>
+                            </div>
+                    ${order.customer_notes ? `
+                        <div class="info-row">
+                            <span class="info-label">Notes:</span>
+                            <span class="info-value notes">${order.customer_notes}</span>
+                        </div>
+                    ` : ''}
+                `;
+                console.log('✅ Customer info displayed successfully');
+            } catch (error) {
+                console.error('❌ Error displaying customer info:', error);
+                const customerInfo = document.getElementById('customerInfo');
+                customerInfo.innerHTML = '<div class="error-message">Error loading customer information</div>';
+            }
         }
 
         // Display order summary
