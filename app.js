@@ -319,9 +319,13 @@ function updateProductItemNumbers() {
 }
 
 function updateItem(index, field, value) {
+    console.log(`🔄 Updating item ${index}, field: ${field}, value: ${value}`);
     if (items[index]) {
         items[index][field] = value;
+        console.log(`✅ Updated item ${index}:`, items[index]);
         recalculateTotals();
+    } else {
+        console.log(`❌ Item ${index} not found in items array`);
     }
 }
 
@@ -346,6 +350,9 @@ function loadRatesFromStorage() {
 
 // Calculations
 function recalculateTotals() {
+    console.log('🔄 Recalculating totals...');
+    console.log('📊 Items array:', items);
+    
     // Update rates from inputs
     const fxInput = document.getElementById('fx');
     if (fxInput) {
@@ -353,12 +360,28 @@ function recalculateTotals() {
     }
     
     // Calculate totals - ensure all values are numbers
-    const subtotalTL = parseFloat(items.reduce((sum, item) => sum + (parseFloat(item.priceTL || 0)), 0));
+    const subtotalTL = parseFloat(items.reduce((sum, item) => {
+        const price = parseFloat(item.priceTL || 0);
+        const qty = parseInt(item.qty || 1);
+        const total = price * qty;
+        console.log(`Item ${item.id || 'no-id'}: price=${price}, qty=${qty}, total=${total}`);
+        return sum + total;
+    }, 0));
     const subtotalUSD = parseFloat(subtotalTL / rates.usdToTl); // Convert TL to USD
     const serviceFeeUSD = parseFloat(subtotalUSD * SERVICE_FEE_RATE);
     const totalWeight = parseFloat(items.reduce((sum, item) => sum + (parseFloat(item.weightKg || 0)), 0));
     const shippingUSD = parseFloat(totalWeight * SHIPPING_PER_KG_USD);
     let totalUSD = parseFloat(subtotalUSD + serviceFeeUSD + shippingUSD);
+    
+    console.log('💰 Calculation results:', {
+        subtotalTL,
+        subtotalUSD,
+        serviceFeeUSD,
+        totalWeight,
+        shippingUSD,
+        totalUSD,
+        rates: rates.usdToTl
+    });
     
     // Apply discount if active
     let discountUSD = 0;
@@ -1510,10 +1533,13 @@ function calculateTotal() {
     updateItemsBreakdown(fxRate);
     
     // Update totals
-    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-    document.getElementById('serviceFee').textContent = `$${serviceFee.toFixed(2)}`;
-    document.getElementById('shippingCost').textContent = `$0.00`;
-    document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
+    const subtotalEl = document.getElementById('subtotal');
+    const serviceFeeEl = document.getElementById('serviceFee');
+    const totalCostEl = document.getElementById('totalCost');
+    
+    if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+    if (serviceFeeEl) serviceFeeEl.textContent = `$${serviceFee.toFixed(2)}`;
+    if (totalCostEl) totalCostEl.textContent = `$${totalCost.toFixed(2)}`;
     
     // Show results
     document.getElementById('calculatorResults').style.display = 'block';
