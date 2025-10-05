@@ -3662,3 +3662,219 @@ a, button, input, select, textarea {
     gap: var(--space-xs);
   }
 }
+
+/* ===== CALCULATOR STYLES ===== */
+
+.calculator-hero {
+  background: linear-gradient(135deg, var(--sand-50) 0%, var(--sand-100) 100%);
+  padding: var(--space-4xl) 0;
+}
+
+.calculator-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-lg);
+  display: block;
+}
+
+.calculator-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+.calculator-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--sand-200);
+}
+
+.calculator-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.calculator-header h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--charcoal-800);
+  margin-bottom: var(--space-sm);
+}
+
+.calculator-form {
+  margin-bottom: var(--space-2xl);
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-group .input {
+  padding-right: 3rem;
+  text-align: right;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.input-suffix {
+  position: absolute;
+  right: var(--space-md);
+  color: var(--taupe-600);
+  font-weight: 500;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.calculator-btn {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: var(--space-lg) var(--space-xl);
+  margin-top: var(--space-lg);
+}
+
+.calculator-results {
+  background: var(--sand-50);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  border: 1px solid var(--sand-200);
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.results-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--charcoal-800);
+}
+
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--sand-200);
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-item.result-total {
+  background: var(--accent-red-light);
+  margin: var(--space-md) -var(--space-md) 0;
+  padding: var(--space-lg) var(--space-md);
+  border-radius: var(--radius);
+  border: 2px solid var(--accent-red);
+}
+
+.result-label {
+  font-weight: 500;
+  color: var(--charcoal-700);
+}
+
+.result-value {
+  font-weight: 600;
+  color: var(--charcoal-800);
+  font-size: 1.1rem;
+}
+
+.result-total .result-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.result-total .result-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-red);
+}
+
+.results-note {
+  margin-top: var(--space-lg);
+  text-align: center;
+}
+
+.results-note p {
+  font-size: 0.9rem;
+  color: var(--taupe-600);
+  font-style: italic;
+}
+
+.calculator-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.info-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--sand-200);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-md);
+  display: block;
+}
+
+.info-card h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--charcoal-800);
+  margin-bottom: var(--space-sm);
+}
+
+.info-card p {
+  color: var(--taupe-600);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Calculator Responsive Design */
+@media (max-width: 768px) {
+  .calculator-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  
+  .calculator-card {
+    padding: var(--space-xl);
+  }
+  
+  .calculator-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .result-total .result-value {
+    font-size: 1.25rem;
+  }
+  
+  .info-card {
+    padding: var(--space-lg);
+  }
+}

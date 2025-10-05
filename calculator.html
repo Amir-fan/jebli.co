@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Calculator - JEBLI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header__row">
+            <div class="logo">JEBLI</div>
+            
+            <!-- Navigation -->
+            <nav class="nav" id="mainNav">
+                <!-- Mobile Menu Close Button -->
+                <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close mobile menu">×</button>
+                <a href="index.html" class="nav-link" data-i18n="nav_home">Home</a>
+                <a href="shops.html" class="nav-link" data-i18n="nav_shops">Shops</a>
+                <a href="track.html" class="nav-link" data-i18n="nav_track">Track Order</a>
+                <a href="contact.html" class="nav-link" data-i18n="nav_contact">Contact</a>
+                <a href="calculator.html" class="nav-link active" data-i18n="nav_calculator">Calculator</a>
+            </nav>
+            
+            <div class="actions">
+                <div class="language-selector">
+                    <select id="langSelect" class="lang-dropdown" aria-label="Select language">
+                        <option value="en">EN</option>
+                        <option value="ar">AR</option>
+                    </select>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section section--tint calculator-hero">
+        <div class="container center">
+            <div class="calculator-icon">🧮</div>
+            <h1 data-i18n="calculator_hero_title">Price Calculator</h1>
+            <p class="muted" data-i18n="calculator_hero_subtitle">Calculate the total cost of your Turkish purchases in USD</p>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="section">
+        <div class="container">
+            <div class="calculator-container">
+                <div class="calculator-card">
+                    <div class="calculator-header">
+                        <h2 data-i18n="calculator_title">Price Calculator</h2>
+                        <p class="muted" data-i18n="calculator_subtitle">Enter the price in Turkish Lira to see the total cost in USD</p>
+                    </div>
+
+                    <form class="calculator-form" id="calculatorForm">
+                        <div class="form-group">
+                            <label for="priceTL" data-i18n="calculator_price_label">Product Price (TL)</label>
+                            <div class="input-group">
+                                <input type="number" id="priceTL" name="priceTL" class="input" placeholder="0" step="0.01" min="0" required>
+                                <span class="input-suffix">TL</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="weight" data-i18n="calculator_weight_label">Weight (kg)</label>
+                            <div class="input-group">
+                                <input type="number" id="weight" name="weight" class="input" placeholder="1" step="0.1" min="0.1" value="1" required>
+                                <span class="input-suffix">kg</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--large calculator-btn" data-i18n="calculator_calculate">Calculate Total</button>
+                    </form>
+
+                    <!-- Results -->
+                    <div class="calculator-results" id="calculatorResults" style="display: none;">
+                        <div class="results-header">
+                            <h3 data-i18n="calculator_results_title">Cost Breakdown</h3>
+                        </div>
+                        
+                        <div class="results-grid">
+                            <div class="result-item">
+                                <span class="result-label" data-i18n="calculator_original_price">Original Price</span>
+                                <span class="result-value" id="originalPrice">0 TL</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="result-label" data-i18n="calculator_converted_price">Converted to USD</span>
+                                <span class="result-value" id="convertedPrice">$0.00</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="result-label" data-i18n="calculator_service_fee">Service Fee (15%)</span>
+                                <span class="result-value" id="serviceFee">$0.00</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="result-label" data-i18n="calculator_shipping">Shipping</span>
+                                <span class="result-value" id="shippingCost">$0.00</span>
+                            </div>
+                            
+                            <div class="result-item result-total">
+                                <span class="result-label" data-i18n="calculator_total">Total Cost</span>
+                                <span class="result-value" id="totalCost">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="results-note">
+                            <p data-i18n="calculator_note">* Prices are calculated using current exchange rate and include all fees</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="calculator-info">
+                    <div class="info-card">
+                        <div class="info-icon">💡</div>
+                        <h4 data-i18n="calculator_info_1_title">How it works</h4>
+                        <p data-i18n="calculator_info_1_text">Enter the Turkish Lira price and weight. We'll calculate the total cost including our 15% service fee and shipping costs.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">📊</div>
+                        <h4 data-i18n="calculator_info_2_title">Transparent Pricing</h4>
+                        <p data-i18n="calculator_info_2_text">See exactly what you'll pay with our detailed cost breakdown. No hidden fees or surprises.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">⚡</div>
+                        <h4 data-i18n="calculator_info_3_title">Real-time Rates</h4>
+                        <p data-i18n="calculator_info_3_text">Our calculator uses current exchange rates to give you the most accurate pricing information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>JEBLI</h3>
+                    <p data-i18n="calculator_footer_description">Your trusted partner for Turkish shopping. Calculate costs transparently and shop with confidence.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 data-i18n="calculator_footer_quick_links">Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html" data-i18n="nav_home">Home</a></li>
+                        <li><a href="shops.html" data-i18n="nav_shops">Shops</a></li>
+                        <li><a href="track.html" data-i18n="nav_track">Track Order</a></li>
+                        <li><a href="contact.html" data-i18n="nav_contact">Contact</a></li>
+                        <li><a href="calculator.html" data-i18n="nav_calculator">Calculator</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 data-i18n="calculator_footer_support">Support</h4>
+                    <ul>
+                        <li><a href="mailto:info@jebli.co">info@jebli.co</a></li>
+                        <li><a href="tel:+905333252333">+90 533 325 23 33</a></li>
+                        <li><a href="#" data-i18n="calculator_footer_help_center">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p data-i18n="calculator_footer_copyright">&copy; 2024 JEBLI. All rights reserved. | Damascus, Syria</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script src="translations.js"></script>
+</body>
+</html>

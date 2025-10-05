@@ -8,6 +8,7 @@ const I18N = {
     "nav_shops": "Shops",
     "nav_track": "Track Order",
     "nav_contact": "Contact",
+    "nav_calculator": "Calculator",
         
         // Hero Section
         "hero_title": "From Turkey to you, send the link, we bring it.",
@@ -277,6 +278,33 @@ const I18N = {
         "contact_footer_shipping_policy": "Shipping Policy",
         "contact_footer_copyright": "© 2024 JEBLI. All rights reserved. | Damascus, Syria",
         
+        // Calculator Page
+        "calculator_hero_title": "Price Calculator",
+        "calculator_hero_subtitle": "Calculate the total cost of your Turkish purchases in USD",
+        "calculator_title": "Price Calculator",
+        "calculator_subtitle": "Enter the price in Turkish Lira to see the total cost in USD",
+        "calculator_price_label": "Product Price (TL)",
+        "calculator_weight_label": "Weight (kg)",
+        "calculator_calculate": "Calculate Total",
+        "calculator_results_title": "Cost Breakdown",
+        "calculator_original_price": "Original Price",
+        "calculator_converted_price": "Converted to USD",
+        "calculator_service_fee": "Service Fee (15%)",
+        "calculator_shipping": "Shipping",
+        "calculator_total": "Total Cost",
+        "calculator_note": "* Prices are calculated using current exchange rate and include all fees",
+        "calculator_info_1_title": "How it works",
+        "calculator_info_1_text": "Enter the Turkish Lira price and weight. We'll calculate the total cost including our 15% service fee and shipping costs.",
+        "calculator_info_2_title": "Transparent Pricing",
+        "calculator_info_2_text": "See exactly what you'll pay with our detailed cost breakdown. No hidden fees or surprises.",
+        "calculator_info_3_title": "Real-time Rates",
+        "calculator_info_3_text": "Our calculator uses current exchange rates to give you the most accurate pricing information.",
+        "calculator_footer_description": "Your trusted partner for Turkish shopping. Calculate costs transparently and shop with confidence.",
+        "calculator_footer_quick_links": "Quick Links",
+        "calculator_footer_support": "Support",
+        "calculator_footer_help_center": "Help Center",
+        "calculator_footer_copyright": "© 2024 JEBLI. All rights reserved. | Damascus, Syria",
+        
         // Track Page
         "track_hero_title": "Track Your Order",
         "track_hero_subtitle": "Enter your tracking ID to check the status of your JEBLI order",
@@ -310,6 +338,7 @@ const I18N = {
     "nav_shops": "المتاجر",
     "nav_track": "تتبع الطلب",
     "nav_contact": "اتصل بنا",
+    "nav_calculator": "الآلة الحاسبة",
         
         // Hero Section
         "hero_title": "من تركيا إليك، أرسل الرابط ونحن نحضره لك",
@@ -578,6 +607,33 @@ const I18N = {
         "contact_footer_terms_of_service": "شروط الخدمة",
         "contact_footer_shipping_policy": "سياسة الشحن",
         "contact_footer_copyright": "© 2024 جبلي. جميع الحقوق محفوظة. | دمشق، سوريا",
+        
+        // Calculator Page
+        "calculator_hero_title": "آلة حاسبة الأسعار",
+        "calculator_hero_subtitle": "احسب التكلفة الإجمالية لمشترياتك التركية بالدولار الأمريكي",
+        "calculator_title": "آلة حاسبة الأسعار",
+        "calculator_subtitle": "أدخل السعر بالليرة التركية لرؤية التكلفة الإجمالية بالدولار الأمريكي",
+        "calculator_price_label": "سعر المنتج (ليرة تركية)",
+        "calculator_weight_label": "الوزن (كيلوغرام)",
+        "calculator_calculate": "احسب الإجمالي",
+        "calculator_results_title": "تفصيل التكلفة",
+        "calculator_original_price": "السعر الأصلي",
+        "calculator_converted_price": "محول إلى دولار",
+        "calculator_service_fee": "رسوم الخدمة (15%)",
+        "calculator_shipping": "الشحن",
+        "calculator_total": "التكلفة الإجمالية",
+        "calculator_note": "* الأسعار محسوبة باستخدام سعر الصرف الحالي وتشمل جميع الرسوم",
+        "calculator_info_1_title": "كيف تعمل",
+        "calculator_info_1_text": "أدخل سعر الليرة التركية والوزن. سنحسب التكلفة الإجمالية بما في ذلك رسوم الخدمة 15% وتكاليف الشحن.",
+        "calculator_info_2_title": "تسعير شفاف",
+        "calculator_info_2_text": "شاهد بالضبط ما ستدفعه مع تفصيل التكلفة المفصل. لا توجد رسوم مخفية أو مفاجآت.",
+        "calculator_info_3_title": "أسعار فورية",
+        "calculator_info_3_text": "تستخدم آلتنا الحاسبة أسعار الصرف الحالية لإعطائك معلومات تسعير دقيقة.",
+        "calculator_footer_description": "شريكك الموثوق للتسوق التركي. احسب التكاليف بشفافية وتسوق بثقة.",
+        "calculator_footer_quick_links": "روابط سريعة",
+        "calculator_footer_support": "الدعم",
+        "calculator_footer_help_center": "مركز المساعدة",
+        "calculator_footer_copyright": "© 2024 جبلي. جميع الحقوق محفوظة. | دمشق، سوريا",
         
         // Track Page
         "track_hero_title": "تتبع طلبك",

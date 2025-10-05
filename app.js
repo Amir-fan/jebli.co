@@ -104,6 +104,9 @@ function setupEventListeners() {
     // Mobile menu functionality
     setupMobileMenu();
     
+    // Calculator functionality
+    setupCalculator();
+    
     // Discount code functionality
     setupDiscountCodeListeners();
     
@@ -1280,4 +1283,63 @@ function handlePopupOutsideClick(event) {
     if (event.target === event.currentTarget) {
         closeFanariLabsPopup();
     }
+}
+
+// ===== CALCULATOR FUNCTIONALITY =====
+
+// Setup calculator functionality
+function setupCalculator() {
+    const calculatorForm = document.getElementById('calculatorForm');
+    const calculatorResults = document.getElementById('calculatorResults');
+    
+    if (!calculatorForm) return;
+    
+    calculatorForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        calculateTotal();
+    });
+    
+    // Real-time calculation on input change
+    const priceInput = document.getElementById('priceTL');
+    const weightInput = document.getElementById('weight');
+    
+    if (priceInput) {
+        priceInput.addEventListener('input', calculateTotal);
+    }
+    
+    if (weightInput) {
+        weightInput.addEventListener('input', calculateTotal);
+    }
+}
+
+// Calculate total cost
+function calculateTotal() {
+    const priceTL = parseFloat(document.getElementById('priceTL').value) || 0;
+    const weight = parseFloat(document.getElementById('weight').value) || 1;
+    
+    if (priceTL <= 0) {
+        document.getElementById('calculatorResults').style.display = 'none';
+        return;
+    }
+    
+    // Get current configuration
+    const fxRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.DEFAULT_FX_RATE : 39;
+    const serviceFeeRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SERVICE_FEE_RATE : 0.15;
+    const shippingPerKg = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SHIPPING_PER_KG_USD : 6;
+    
+    // Calculate costs
+    const convertedPrice = priceTL / fxRate;
+    const serviceFee = convertedPrice * serviceFeeRate;
+    const shippingCost = weight * shippingPerKg;
+    const totalCost = convertedPrice + serviceFee + shippingCost;
+    
+    // Update display
+    document.getElementById('originalPrice').textContent = `${priceTL.toFixed(2)} TL`;
+    document.getElementById('convertedPrice').textContent = `$${convertedPrice.toFixed(2)}`;
+    document.getElementById('serviceFee').textContent = `$${serviceFee.toFixed(2)}`;
+    document.getElementById('shippingCost').textContent = `$${shippingCost.toFixed(2)}`;
+    document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
+    
+    // Show results
+    document.getElementById('calculatorResults').style.display = 'block';
 }
