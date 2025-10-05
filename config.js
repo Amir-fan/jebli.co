@@ -1,7 +1,7 @@
 // JEBLI Order Pipeline Configuration
 const JEBLI_CONFIG = {
     // Backend API Configuration
-    API_URL: 'https://script.google.com/macros/s/AKfycbxIuOkOX7pQcv6VCsTEePGR4hkB731_b2kqYxci_3YhoqZTUHu_x9T-ypqR0eqK0pHlJQ/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbzYWHkKHgGL_BSI6g7EFXzmLzyEKkV59N1HxqxZgXbbXvab5HdGqXS2PWKPcZYxI2DtoA/exec',
     API_KEY: 'jebli_secret_key_2024_xyz789_secure_hash',
     
     // Business Logic Constants
