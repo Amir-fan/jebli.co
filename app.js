@@ -272,16 +272,22 @@ function addProductItem() {
                 <label>Weight (kg)</label>
                 <input type="number" class="input" step="0.1" min="0" oninput="updateItem(${itemIndex}, 'weightKg', parseFloat(this.value) || 0)">
             </div>
+            <div>
+                <label>Quantity</label>
+                <input type="number" class="input" min="1" value="1" oninput="updateItem(${itemIndex}, 'qty', parseInt(this.value) || 1)">
+            </div>
         </div>
     `;
     
     itemsContainer.appendChild(productItem);
     items.push({
+        id: `item-${Date.now()}-${itemIndex}`, // Generate unique ID
         url: '',
         size: '',
         color: '',
         priceTL: 0,
-        weightKg: 0
+        weightKg: 0,
+        qty: 1
     });
     
     recalculateTotals();
@@ -802,7 +808,7 @@ function validateOrderForm() {
     const validItems = items.filter(item => {
         const hasUrl = item.url && item.url.trim() !== '';
         const hasPrice = item.priceTL && parseFloat(item.priceTL) > 0;
-        console.log(`Item ${item.id}: url="${item.url}", priceTL="${item.priceTL}", hasUrl=${hasUrl}, hasPrice=${hasPrice}`);
+        console.log(`Item ${item.id || 'no-id'}: url="${item.url}", priceTL="${item.priceTL}", hasUrl=${hasUrl}, hasPrice=${hasPrice}`);
         return hasUrl && hasPrice;
     });
     console.log('✅ Valid items found:', validItems.length);
@@ -1361,11 +1367,22 @@ function setupCalculator() {
     
     calculatorForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        console.log('🧮 Calculator form submitted');
         calculateTotal();
     });
     
     if (addItemBtn) {
         addItemBtn.addEventListener('click', addCalculatorItem);
+    }
+    
+    // Add click listener to calculate button
+    const calculateBtn = document.querySelector('.calculator-btn');
+    if (calculateBtn) {
+        calculateBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('🧮 Calculate button clicked');
+            calculateTotal();
+        });
     }
     
     // Add first item by default
