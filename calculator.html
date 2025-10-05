@@ -63,23 +63,14 @@
                     </div>
 
                     <form class="calculator-form" id="calculatorForm">
-                        <div class="form-group">
-                            <label for="priceTL" data-i18n="calculator_price_label">Product Price (TL)</label>
-                            <div class="input-group">
-                                <input type="number" id="priceTL" name="priceTL" class="input" placeholder="0" step="0.01" min="0" required>
-                                <span class="input-suffix">TL</span>
-                            </div>
+                        <div class="calculator-items" id="calculatorItems">
+                            <!-- Items will be added dynamically here -->
                         </div>
 
-                        <div class="form-group">
-                            <label for="weight" data-i18n="calculator_weight_label">Weight (kg)</label>
-                            <div class="input-group">
-                                <input type="number" id="weight" name="weight" class="input" placeholder="1" step="0.1" min="0.1" value="1" required>
-                                <span class="input-suffix">kg</span>
-                            </div>
+                        <div class="calculator-actions">
+                            <button type="button" class="btn btn--secondary" id="addItemBtn" data-i18n="calculator_add_item">+ Add Item</button>
+                            <button type="submit" class="btn btn--primary btn--large calculator-btn" data-i18n="calculator_calculate">Calculate Total</button>
                         </div>
-
-                        <button type="submit" class="btn btn--primary btn--large calculator-btn" data-i18n="calculator_calculate">Calculate Total</button>
                     </form>
 
                     <!-- Results -->
@@ -88,15 +79,15 @@
                             <h3 data-i18n="calculator_results_title">Cost Breakdown</h3>
                         </div>
                         
+                        <!-- Items Breakdown -->
+                        <div class="items-breakdown" id="itemsBreakdown">
+                            <!-- Individual items will be shown here -->
+                        </div>
+                        
                         <div class="results-grid">
                             <div class="result-item">
-                                <span class="result-label" data-i18n="calculator_original_price">Original Price</span>
-                                <span class="result-value" id="originalPrice">0 TL</span>
-                            </div>
-                            
-                            <div class="result-item">
-                                <span class="result-label" data-i18n="calculator_converted_price">Converted to USD</span>
-                                <span class="result-value" id="convertedPrice">$0.00</span>
+                                <span class="result-label" data-i18n="calculator_subtotal">Subtotal</span>
+                                <span class="result-value" id="subtotal">$0.00</span>
                             </div>
                             
                             <div class="result-item">

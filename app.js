@@ -1287,10 +1287,13 @@ function handlePopupOutsideClick(event) {
 
 // ===== CALCULATOR FUNCTIONALITY =====
 
+let calculatorItems = [];
+let itemCounter = 0;
+
 // Setup calculator functionality
 function setupCalculator() {
     const calculatorForm = document.getElementById('calculatorForm');
-    const calculatorResults = document.getElementById('calculatorResults');
+    const addItemBtn = document.getElementById('addItemBtn');
     
     if (!calculatorForm) return;
     
@@ -1299,47 +1302,184 @@ function setupCalculator() {
         calculateTotal();
     });
     
-    // Real-time calculation on input change
-    const priceInput = document.getElementById('priceTL');
-    const weightInput = document.getElementById('weight');
+    if (addItemBtn) {
+        addItemBtn.addEventListener('click', addCalculatorItem);
+    }
+    
+    // Add first item by default
+    addCalculatorItem();
+}
+
+// Add a new calculator item
+function addCalculatorItem() {
+    itemCounter++;
+    const itemId = `item-${itemCounter}`;
+    
+    const item = {
+        id: itemId,
+        priceTL: 0,
+        weight: 1,
+        name: `Item ${itemCounter}`
+    };
+    
+    calculatorItems.push(item);
+    
+    const itemsContainer = document.getElementById('calculatorItems');
+    if (itemsContainer) {
+        const itemElement = createItemElement(item);
+        itemsContainer.appendChild(itemElement);
+    }
+    
+    // Add event listeners for real-time calculation
+    setupItemEventListeners(itemId);
+    
+    // Calculate total
+    calculateTotal();
+}
+
+// Create item element
+function createItemElement(item) {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'calculator-item';
+    itemDiv.id = `item-${item.id}`;
+    
+    itemDiv.innerHTML = `
+        <div class="calculator-item-header">
+            <span class="calculator-item-title">${item.name}</span>
+            <button type="button" class="remove-item-btn" onclick="removeCalculatorItem('${item.id}')" title="Remove item">×</button>
+        </div>
+        <div class="calculator-item-fields">
+            <div class="form-group">
+                <label for="price-${item.id}" data-i18n="calculator_price_label">Price (TL)</label>
+                <div class="input-group">
+                    <input type="number" id="price-${item.id}" class="input" placeholder="0" step="0.01" min="0" value="${item.priceTL}">
+                    <span class="input-suffix">TL</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="weight-${item.id}" data-i18n="calculator_weight_label">Weight (kg)</label>
+                <div class="input-group">
+                    <input type="number" id="weight-${item.id}" class="input" placeholder="1" step="0.1" min="0.1" value="${item.weight}">
+                    <span class="input-suffix">kg</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    return itemDiv;
+}
+
+// Setup event listeners for an item
+function setupItemEventListeners(itemId) {
+    const priceInput = document.getElementById(`price-${itemId}`);
+    const weightInput = document.getElementById(`weight-${itemId}`);
     
     if (priceInput) {
-        priceInput.addEventListener('input', calculateTotal);
+        priceInput.addEventListener('input', function() {
+            updateItem(itemId, 'priceTL', parseFloat(this.value) || 0);
+            calculateTotal();
+        });
     }
     
     if (weightInput) {
-        weightInput.addEventListener('input', calculateTotal);
+        weightInput.addEventListener('input', function() {
+            updateItem(itemId, 'weight', parseFloat(this.value) || 1);
+            calculateTotal();
+        });
+    }
+}
+
+// Update item data
+function updateItem(itemId, field, value) {
+    const item = calculatorItems.find(item => item.id === itemId);
+    if (item) {
+        item[field] = value;
+    }
+}
+
+// Remove calculator item
+function removeCalculatorItem(itemId) {
+    // Remove from array
+    calculatorItems = calculatorItems.filter(item => item.id !== itemId);
+    
+    // Remove from DOM
+    const itemElement = document.getElementById(`item-${itemId}`);
+    if (itemElement) {
+        itemElement.remove();
+    }
+    
+    // Recalculate
+    calculateTotal();
+    
+    // If no items left, add one
+    if (calculatorItems.length === 0) {
+        addCalculatorItem();
     }
 }
 
 // Calculate total cost
 function calculateTotal() {
-    const priceTL = parseFloat(document.getElementById('priceTL').value) || 0;
-    const weight = parseFloat(document.getElementById('weight').value) || 1;
-    
-    if (priceTL <= 0) {
-        document.getElementById('calculatorResults').style.display = 'none';
-        return;
-    }
-    
     // Get current configuration
     const fxRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.DEFAULT_FX_RATE : 39;
     const serviceFeeRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SERVICE_FEE_RATE : 0.15;
     const shippingPerKg = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SHIPPING_PER_KG_USD : 6;
     
-    // Calculate costs
-    const convertedPrice = priceTL / fxRate;
-    const serviceFee = convertedPrice * serviceFeeRate;
-    const shippingCost = weight * shippingPerKg;
-    const totalCost = convertedPrice + serviceFee + shippingCost;
+    let subtotal = 0;
+    let totalWeight = 0;
+    let hasValidItems = false;
     
-    // Update display
-    document.getElementById('originalPrice').textContent = `${priceTL.toFixed(2)} TL`;
-    document.getElementById('convertedPrice').textContent = `$${convertedPrice.toFixed(2)}`;
+    // Calculate subtotal and total weight
+    calculatorItems.forEach(item => {
+        if (item.priceTL > 0) {
+            subtotal += item.priceTL / fxRate;
+            totalWeight += item.weight;
+            hasValidItems = true;
+        }
+    });
+    
+    if (!hasValidItems) {
+        document.getElementById('calculatorResults').style.display = 'none';
+        return;
+    }
+    
+    // Calculate fees
+    const serviceFee = subtotal * serviceFeeRate;
+    const shippingCost = totalWeight * shippingPerKg;
+    const totalCost = subtotal + serviceFee + shippingCost;
+    
+    // Update items breakdown
+    updateItemsBreakdown(fxRate);
+    
+    // Update totals
+    document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
     document.getElementById('serviceFee').textContent = `$${serviceFee.toFixed(2)}`;
     document.getElementById('shippingCost').textContent = `$${shippingCost.toFixed(2)}`;
     document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
     
     // Show results
     document.getElementById('calculatorResults').style.display = 'block';
+}
+
+// Update items breakdown display
+function updateItemsBreakdown(fxRate) {
+    const breakdownContainer = document.getElementById('itemsBreakdown');
+    if (!breakdownContainer) return;
+    
+    breakdownContainer.innerHTML = '';
+    
+    calculatorItems.forEach((item, index) => {
+        if (item.priceTL > 0) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-breakdown';
+            
+            const convertedPrice = item.priceTL / fxRate;
+            
+            itemDiv.innerHTML = `
+                <span class="item-breakdown-name">${item.name}: ${item.priceTL.toFixed(2)} TL</span>
+                <span class="item-breakdown-price">$${convertedPrice.toFixed(2)}</span>
+            `;
+            
+            breakdownContainer.appendChild(itemDiv);
+        }
+    });
 }

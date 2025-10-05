@@ -3709,6 +3709,105 @@ a, button, input, select, textarea {
   margin-bottom: var(--space-2xl);
 }
 
+.calculator-items {
+  margin-bottom: var(--space-xl);
+}
+
+.calculator-item {
+  background: var(--sand-50);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+  border: 1px solid var(--sand-200);
+  position: relative;
+}
+
+.calculator-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.calculator-item-title {
+  font-weight: 600;
+  color: var(--charcoal-800);
+  font-size: 1rem;
+}
+
+.remove-item-btn {
+  background: var(--accent-red);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.remove-item-btn:hover {
+  background: var(--accent-red-dark);
+  transform: scale(1.1);
+}
+
+.calculator-item-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.calculator-actions {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.calculator-actions .btn--secondary {
+  background: var(--sand-200);
+  color: var(--charcoal-700);
+  border: 1px solid var(--sand-300);
+}
+
+.calculator-actions .btn--secondary:hover {
+  background: var(--sand-300);
+  color: var(--charcoal-800);
+}
+
+.items-breakdown {
+  margin-bottom: var(--space-xl);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.item-breakdown {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--sand-200);
+  font-size: 0.9rem;
+}
+
+.item-breakdown:last-child {
+  border-bottom: none;
+}
+
+.item-breakdown-name {
+  color: var(--charcoal-700);
+  font-weight: 500;
+}
+
+.item-breakdown-price {
+  color: var(--charcoal-800);
+  font-weight: 600;
+}
+
 .input-group {
   position: relative;
   display: flex;
@@ -3868,6 +3967,20 @@ a, button, input, select, textarea {
   
   .calculator-header h2 {
     font-size: 1.5rem;
+  }
+  
+  .calculator-item-fields {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .calculator-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .calculator-actions .btn {
+    width: 100%;
   }
   
   .result-total .result-value {
