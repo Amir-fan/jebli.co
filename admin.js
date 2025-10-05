@@ -2689,7 +2689,7 @@ class AdminDashboard {
     
     // Settings Management
     saveSettings() {
-        const usdToTlRate = parseFloat(document.getElementById('usdToTlRate').value) || 40;
+        const usdToTlRate = parseFloat(document.getElementById('usdToTlRate').value) || 40.5;
         const shippingRate = parseFloat(document.getElementById('shippingRate').value) || 6;
         const serviceFee = parseFloat(document.getElementById('serviceFee').value) || 15;
         
@@ -2708,8 +2708,54 @@ class AdminDashboard {
         localStorage.setItem('jebli-shipping-rate', shippingRate.toString());
         localStorage.setItem('jebli-service-fee', serviceFee.toString());
         
-        this.showToast('Settings saved successfully!', 'success');
+        // Update main website configuration
+        this.updateMainWebsiteConfig();
+        
+        this.showToast('Settings saved successfully! Main website updated in real-time.', 'success');
         console.log('Settings saved:', this.settings);
+    }
+    
+    saveShippingSettings() {
+        const shippingRate = parseFloat(document.getElementById('shippingRate').value);
+        const serviceFee = parseFloat(document.getElementById('serviceFee').value);
+        
+        if (shippingRate && shippingRate > 0 && serviceFee && serviceFee >= 0) {
+            // Update settings
+            this.settings.shippingRate = shippingRate;
+            this.settings.serviceFee = serviceFee;
+            this.settings.lastUpdated = new Date().toISOString();
+            
+            // Save to localStorage
+            localStorage.setItem('jebli-admin-settings', JSON.stringify(this.settings));
+            
+            // Update main website
+            localStorage.setItem('jebli-shipping-rate', shippingRate.toString());
+            localStorage.setItem('jebli-service-fee', serviceFee.toString());
+            
+            this.updateMainWebsiteConfig();
+            
+            this.showToast(`Shipping settings updated! Rate: $${shippingRate}/kg, Service Fee: ${serviceFee}%`, 'success');
+        } else {
+            this.showToast('Please enter valid shipping rate and service fee', 'error');
+        }
+    }
+    
+    updateMainWebsiteConfig() {
+        // Update the main website's configuration in real-time
+        if (window.JEBLI_CONFIG) {
+            window.JEBLI_CONFIG.DEFAULT_FX_RATE = this.settings.usdToTlRate;
+            window.JEBLI_CONFIG.SHIPPING_PER_KG_USD = this.settings.shippingRate;
+            window.JEBLI_CONFIG.SERVICE_FEE_RATE = this.settings.serviceFee / 100; // Convert percentage to decimal
+        }
+        
+        // Dispatch custom event to notify main website
+        window.dispatchEvent(new CustomEvent('jebliSettingsUpdated', {
+            detail: {
+                fxRate: this.settings.usdToTlRate,
+                shippingRate: this.settings.shippingRate,
+                serviceFee: this.settings.serviceFee
+            }
+        }));
     }
     
     updateMainWebsiteRate() {
@@ -2731,8 +2777,37 @@ class AdminDashboard {
     }
     
     loadSettings() {
-        // Implementation for loading settings
-        console.log('✅ Settings section loaded');
+        // Load settings from localStorage
+        const savedSettings = localStorage.getItem('jebli-admin-settings');
+        if (savedSettings) {
+            this.settings = JSON.parse(savedSettings);
+            
+            // Update form fields with saved values
+            if (this.settings.usdToTlRate) {
+                document.getElementById('usdToTlRate').value = this.settings.usdToTlRate;
+            }
+            if (this.settings.shippingRate) {
+                document.getElementById('shippingRate').value = this.settings.shippingRate;
+            }
+            if (this.settings.serviceFee) {
+                document.getElementById('serviceFee').value = this.settings.serviceFee;
+            }
+        } else {
+            // Set default values
+            this.settings = {
+                usdToTlRate: 40.5,
+                shippingRate: 6,
+                serviceFee: 15,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            // Update form fields with defaults
+            document.getElementById('usdToTlRate').value = this.settings.usdToTlRate;
+            document.getElementById('shippingRate').value = this.settings.shippingRate;
+            document.getElementById('serviceFee').value = this.settings.serviceFee;
+        }
+        
+        console.log('✅ Settings section loaded with values:', this.settings);
     }
 
     // Update value hint for discount type

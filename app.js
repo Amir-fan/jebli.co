@@ -95,6 +95,27 @@ function updateConfigurationFromJEBLIConfig() {
             SHIPPING_PER_KG_USD
         });
     }
+    
+    // Also check localStorage for admin settings
+    const adminFxRate = localStorage.getItem('jebli-usd-to-tl');
+    const adminShippingRate = localStorage.getItem('jebli-shipping-rate');
+    const adminServiceFee = localStorage.getItem('jebli-service-fee');
+    
+    if (adminFxRate) {
+        FX_USD_TO_TL = parseFloat(adminFxRate);
+        rates.usdToTl = FX_USD_TO_TL;
+        console.log('✅ FX Rate updated from admin settings:', FX_USD_TO_TL);
+    }
+    
+    if (adminShippingRate) {
+        SHIPPING_PER_KG_USD = parseFloat(adminShippingRate);
+        console.log('✅ Shipping rate updated from admin settings:', SHIPPING_PER_KG_USD);
+    }
+    
+    if (adminServiceFee) {
+        SERVICE_FEE_RATE = parseFloat(adminServiceFee) / 100; // Convert percentage to decimal
+        console.log('✅ Service fee updated from admin settings:', SERVICE_FEE_RATE);
+    }
 }
 
 // Setup event listeners
@@ -126,6 +147,39 @@ function setupEventListeners() {
     } else {
         console.log('❌ Language selector not found');
     }
+    
+    // Listen for settings updates from admin dashboard
+    window.addEventListener('jebliSettingsUpdated', function(event) {
+        console.log('🔄 Settings updated from admin dashboard:', event.detail);
+        
+        const { fxRate, shippingRate, serviceFee } = event.detail;
+        
+        if (fxRate) {
+            FX_USD_TO_TL = fxRate;
+            rates.usdToTl = fxRate;
+            console.log('✅ FX Rate updated in real-time:', fxRate);
+        }
+        
+        if (shippingRate) {
+            SHIPPING_PER_KG_USD = shippingRate;
+            console.log('✅ Shipping rate updated in real-time:', shippingRate);
+        }
+        
+        if (serviceFee) {
+            SERVICE_FEE_RATE = serviceFee / 100; // Convert percentage to decimal
+            console.log('✅ Service fee updated in real-time:', SERVICE_FEE_RATE);
+        }
+        
+        // Recalculate if calculator is visible
+        if (typeof calculateTotal === 'function') {
+            calculateTotal();
+        }
+        
+        // Show notification
+        if (typeof showNotification === 'function') {
+            showNotification('Settings updated from admin dashboard!', 'success');
+        }
+    });
     
     // Add item button
     const addItemBtn = document.getElementById('addItem');
