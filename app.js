@@ -798,7 +798,15 @@ function validateOrderForm() {
     }
     
     // Check if at least one product has valid URL and price
-    const validItems = items.filter(item => item.url && item.priceTL > 0);
+    console.log('🔍 Validating items:', items);
+    const validItems = items.filter(item => {
+        const hasUrl = item.url && item.url.trim() !== '';
+        const hasPrice = item.priceTL && parseFloat(item.priceTL) > 0;
+        console.log(`Item ${item.id}: url="${item.url}", priceTL="${item.priceTL}", hasUrl=${hasUrl}, hasPrice=${hasPrice}`);
+        return hasUrl && hasPrice;
+    });
+    console.log('✅ Valid items found:', validItems.length);
+    
     if (validItems.length === 0) {
         showToast('Please add at least one product with valid URL and price', 'error');
         return false;
@@ -1372,7 +1380,6 @@ function addCalculatorItem() {
     const item = {
         id: itemId,
         priceTL: 0,
-        weight: 1,
         name: `Item ${itemCounter}`
     };
     
@@ -1410,13 +1417,6 @@ function createItemElement(item) {
                     <span class="input-suffix">TL</span>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="weight-${item.id}" data-i18n="calculator_weight_label">Weight (kg)</label>
-                <div class="input-group">
-                    <input type="number" id="weight-${item.id}" class="input" placeholder="1" step="0.1" min="0.1" value="${item.weight}" inputmode="numeric" pattern="[0-9]*">
-                    <span class="input-suffix">kg</span>
-                </div>
-            </div>
         </div>
     `;
     
@@ -1426,18 +1426,10 @@ function createItemElement(item) {
 // Setup event listeners for an item
 function setupItemEventListeners(itemId) {
     const priceInput = document.getElementById(`price-${itemId}`);
-    const weightInput = document.getElementById(`weight-${itemId}`);
     
     if (priceInput) {
         priceInput.addEventListener('input', function() {
             updateItem(itemId, 'priceTL', parseFloat(this.value) || 0);
-            calculateTotal();
-        });
-    }
-    
-    if (weightInput) {
-        weightInput.addEventListener('input', function() {
-            updateItem(itemId, 'weight', parseFloat(this.value) || 1);
             calculateTotal();
         });
     }
@@ -1476,17 +1468,14 @@ function calculateTotal() {
     // Get current configuration
     const fxRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.DEFAULT_FX_RATE : 40.5;
     const serviceFeeRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SERVICE_FEE_RATE : 0.15;
-    const shippingPerKg = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SHIPPING_PER_KG_USD : 6;
     
     let subtotal = 0;
-    let totalWeight = 0;
     let hasValidItems = false;
     
-    // Calculate subtotal and total weight
+    // Calculate subtotal
     calculatorItems.forEach(item => {
         if (item.priceTL > 0) {
             subtotal += item.priceTL / fxRate;
-            totalWeight += item.weight;
             hasValidItems = true;
         }
     });
@@ -1496,10 +1485,9 @@ function calculateTotal() {
         return;
     }
     
-    // Calculate fees
+    // Calculate service fee
     const serviceFee = subtotal * serviceFeeRate;
-    const shippingCost = totalWeight * shippingPerKg;
-    const totalCost = subtotal + serviceFee + shippingCost;
+    const totalCost = subtotal + serviceFee;
     
     // Update items breakdown
     updateItemsBreakdown(fxRate);
@@ -1507,7 +1495,7 @@ function calculateTotal() {
     // Update totals
     document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
     document.getElementById('serviceFee').textContent = `$${serviceFee.toFixed(2)}`;
-    document.getElementById('shippingCost').textContent = `$${shippingCost.toFixed(2)}`;
+    document.getElementById('shippingCost').textContent = `$0.00`;
     document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
     
     // Show results
