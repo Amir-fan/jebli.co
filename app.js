@@ -246,42 +246,44 @@ function addProductItem() {
     
     const productItem = document.createElement('div');
     productItem.className = 'product-item';
+    const itemId = `item-${Date.now()}-${itemIndex}`;
+    
     productItem.innerHTML = `
         <div class="product-item-header">
             <span class="product-item-title">Item ${itemIndex + 1}</span>
-            ${itemIndex > 0 ? `<button type="button" class="remove-item" onclick="removeProductItem(${itemIndex})">×</button>` : ''}
+            ${itemIndex > 0 ? `<button type="button" class="remove-item" onclick="removeProductItemById('${itemId}')">×</button>` : ''}
         </div>
         <div class="product-grid">
             <div>
                 <label>Product URL</label>
-                <input type="url" class="input" placeholder="https://..." oninput="console.log('URL input changed:', this.value); updateItem(${itemIndex}, 'url', this.value)">
+                <input type="url" class="input" placeholder="https://..." oninput="console.log('URL input changed:', this.value); updateItemById('${itemId}', 'url', this.value)">
             </div>
             <div>
                 <label>Size</label>
-                <input type="text" class="input" placeholder="M, L, XL..." oninput="updateItem(${itemIndex}, 'size', this.value)">
+                <input type="text" class="input" placeholder="M, L, XL..." oninput="updateItemById('${itemId}', 'size', this.value)">
             </div>
             <div>
                 <label>Color</label>
-                <input type="text" class="input" placeholder="Red, Blue..." oninput="updateItem(${itemIndex}, 'color', this.value)">
+                <input type="text" class="input" placeholder="Red, Blue..." oninput="updateItemById('${itemId}', 'color', this.value)">
             </div>
             <div>
                 <label>Price (TL)</label>
-                <input type="number" class="input" step="0.01" min="0" oninput="console.log('Price input changed:', this.value); updateItem(${itemIndex}, 'priceTL', parseFloat(this.value) || 0)">
+                <input type="number" class="input" step="0.01" min="0" oninput="console.log('Price input changed:', this.value); updateItemById('${itemId}', 'priceTL', parseFloat(this.value) || 0)">
             </div>
             <div>
                 <label>Weight (kg)</label>
-                <input type="number" class="input" step="0.1" min="0" oninput="updateItem(${itemIndex}, 'weightKg', parseFloat(this.value) || 0)">
+                <input type="number" class="input" step="0.1" min="0" oninput="updateItemById('${itemId}', 'weightKg', parseFloat(this.value) || 0)">
             </div>
             <div>
                 <label>Quantity</label>
-                <input type="number" class="input" min="1" value="1" oninput="updateItem(${itemIndex}, 'qty', parseInt(this.value) || 1)">
+                <input type="number" class="input" min="1" value="1" oninput="updateItemById('${itemId}', 'qty', parseInt(this.value) || 1)">
             </div>
         </div>
     `;
     
     itemsContainer.appendChild(productItem);
     const newItem = {
-        id: `item-${Date.now()}-${itemIndex}`, // Generate unique ID
+        id: itemId, // Use the same ID as in the HTML template
         url: '',
         size: '',
         color: '',
@@ -313,6 +315,29 @@ function removeProductItem(index) {
 // Make removeProductItem globally available
 window.removeProductItem = removeProductItem;
 
+// New function that works with item IDs
+function removeProductItemById(itemId) {
+    console.log(`🔄 Removing item by ID ${itemId}`);
+    const itemIndex = items.findIndex(item => item.id === itemId);
+    if (itemIndex !== -1) {
+        items.splice(itemIndex, 1);
+        const productItems = document.querySelectorAll('.product-item');
+        if (productItems[itemIndex]) {
+            productItems[itemIndex].remove();
+        }
+        
+        // Update item numbers and remove buttons
+        updateProductItemNumbers();
+        recalculateTotals();
+        console.log('➖ Product item removed by ID');
+    } else {
+        console.log(`❌ Item ${itemId} not found in items array`);
+    }
+}
+
+// Make removeProductItemById globally available
+window.removeProductItemById = removeProductItemById;
+
 function updateProductItemNumbers() {
     const productItems = document.querySelectorAll('.product-item');
     productItems.forEach((item, index) => {
@@ -339,6 +364,22 @@ function updateItem(index, field, value) {
 
 // Make updateItem globally available
 window.updateItem = updateItem;
+
+// New function that works with item IDs
+function updateItemById(itemId, field, value) {
+    console.log(`🔄 Updating item by ID ${itemId}, field: ${field}, value: ${value}`);
+    const itemIndex = items.findIndex(item => item.id === itemId);
+    if (itemIndex !== -1) {
+        items[itemIndex][field] = value;
+        console.log(`✅ Updated item ${itemId}:`, items[itemIndex]);
+        recalculateTotals();
+    } else {
+        console.log(`❌ Item ${itemId} not found in items array`);
+    }
+}
+
+// Make updateItemById globally available
+window.updateItemById = updateItemById;
 
 function addInitialProductItem() {
     console.log('🔄 Adding initial product item...');
