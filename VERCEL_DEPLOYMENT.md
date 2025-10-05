@@ -12,7 +12,7 @@ JEBLI_API_URL=https://script.google.com/macros/s/AKfycbxIuOkOX7pQcv6VCsTEePGR4hk
 JEBLI_API_KEY=jebli_secret_key_2024_xyz789_secure_hash
 
 # Business Configuration
-JEBLI_DEFAULT_FX_RATE=39
+JEBLI_DEFAULT_FX_RATE=40.5
 JEBLI_SHIPPING_PER_KG_USD=6
 JEBLI_SERVICE_FEE_RATE=0.15
 

@@ -5,7 +5,7 @@ const JEBLI_CONFIG = {
     API_KEY: 'jebli_secret_key_2024_xyz789_secure_hash',
     
     // Business Logic Constants
-    DEFAULT_FX_RATE: 39, // TL per USD
+    DEFAULT_FX_RATE: 40.5, // TL per USD
     SHIPPING_PER_KG_USD: 6,
     SERVICE_FEE_RATE: 0.15,
     

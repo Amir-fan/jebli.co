@@ -1,7 +1,7 @@
 // ===== JEBLI.CO MAIN PAGE FUNCTIONALITY =====
 
 // Configuration Constants - Will be set after JEBLI_CONFIG loads
-let FX_USD_TO_TL = 39; // Default value, will be updated
+let FX_USD_TO_TL = 40.5; // Default value, will be updated
 let SERVICE_FEE_RATE = 0.15; // Default value, will be updated  
 let SHIPPING_PER_KG_USD = 6; // Default value, will be updated
 const WHATSAPP_PHONE = "+90 533 325 23 33";
@@ -1420,7 +1420,7 @@ function removeCalculatorItem(itemId) {
 // Calculate total cost
 function calculateTotal() {
     // Get current configuration
-    const fxRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.DEFAULT_FX_RATE : 39;
+    const fxRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.DEFAULT_FX_RATE : 40.5;
     const serviceFeeRate = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SERVICE_FEE_RATE : 0.15;
     const shippingPerKg = window.JEBLI_CONFIG ? window.JEBLI_CONFIG.SHIPPING_PER_KG_USD : 6;
     
