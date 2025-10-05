@@ -1352,14 +1352,14 @@ function createItemElement(item) {
             <div class="form-group">
                 <label for="price-${item.id}" data-i18n="calculator_price_label">Price (TL)</label>
                 <div class="input-group">
-                    <input type="number" id="price-${item.id}" class="input" placeholder="0" step="0.01" min="0" value="${item.priceTL}">
+                    <input type="number" id="price-${item.id}" class="input" placeholder="0" step="0.01" min="0" value="${item.priceTL}" inputmode="numeric" pattern="[0-9]*">
                     <span class="input-suffix">TL</span>
                 </div>
             </div>
             <div class="form-group">
                 <label for="weight-${item.id}" data-i18n="calculator_weight_label">Weight (kg)</label>
                 <div class="input-group">
-                    <input type="number" id="weight-${item.id}" class="input" placeholder="1" step="0.1" min="0.1" value="${item.weight}">
+                    <input type="number" id="weight-${item.id}" class="input" placeholder="1" step="0.1" min="0.1" value="${item.weight}" inputmode="numeric" pattern="[0-9]*">
                     <span class="input-suffix">kg</span>
                 </div>
             </div>

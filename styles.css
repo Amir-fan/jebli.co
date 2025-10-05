@@ -3677,10 +3677,10 @@ a, button, input, select, textarea {
 }
 
 .calculator-container {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.2fr 0.8fr;
   gap: var(--space-2xl);
   align-items: start;
 }
@@ -3758,7 +3758,8 @@ a, button, input, select, textarea {
 .calculator-item-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
+  gap: var(--space-lg);
+  align-items: end;
 }
 
 .calculator-actions {
@@ -3812,6 +3813,7 @@ a, button, input, select, textarea {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .input-group .input {
@@ -3819,6 +3821,8 @@ a, button, input, select, textarea {
   text-align: right;
   font-size: 1.1rem;
   font-weight: 500;
+  width: 100%;
+  min-width: 120px;
 }
 
 .input-suffix {
@@ -3828,6 +3832,19 @@ a, button, input, select, textarea {
   font-weight: 500;
   font-size: 0.9rem;
   pointer-events: none;
+}
+
+/* Remove number input spinners */
+.input-group .input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input-group .input[type="number"]::-webkit-outer-spin-button,
+.input-group .input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .calculator-btn {
@@ -3959,10 +3976,13 @@ a, button, input, select, textarea {
   .calculator-container {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
+    max-width: 100%;
+    padding: 0 var(--space-md);
   }
   
   .calculator-card {
     padding: var(--space-xl);
+    margin: 0;
   }
   
   .calculator-header h2 {
@@ -3971,16 +3991,19 @@ a, button, input, select, textarea {
   
   .calculator-item-fields {
     grid-template-columns: 1fr;
-    gap: var(--space-sm);
+    gap: var(--space-lg);
   }
   
   .calculator-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: var(--space-md);
   }
   
   .calculator-actions .btn {
     width: 100%;
+    padding: var(--space-lg);
+    font-size: 1rem;
   }
   
   .result-total .result-value {
@@ -3988,6 +4011,16 @@ a, button, input, select, textarea {
   }
   
   .info-card {
+    padding: var(--space-lg);
+  }
+  
+  .input-group .input {
+    min-width: 100px;
+    font-size: 1rem;
+    padding: var(--space-md) 3rem var(--space-md) var(--space-md);
+  }
+  
+  .calculator-item {
     padding: var(--space-lg);
   }
 }
