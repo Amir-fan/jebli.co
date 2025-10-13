@@ -256,32 +256,54 @@ function addProductItem() {
         <div class="product-grid">
             <div>
                 <label>Product URL</label>
-                <input type="url" class="input" placeholder="https://..." oninput="console.log('URL input changed:', this.value); updateItemById('${itemId}', 'url', this.value)">
+                <input type="url" class="input" placeholder="https://..." data-item-id="${itemId}" data-field="url">
             </div>
             <div>
                 <label>Size</label>
-                <input type="text" class="input" placeholder="M, L, XL..." oninput="console.log('Size input changed:', this.value); updateItemById('${itemId}', 'size', this.value)">
+                <input type="text" class="input" placeholder="M, L, XL..." data-item-id="${itemId}" data-field="size">
             </div>
             <div>
                 <label>Color</label>
-                <input type="text" class="input" placeholder="Red, Blue..." oninput="console.log('Color input changed:', this.value); updateItemById('${itemId}', 'color', this.value)">
+                <input type="text" class="input" placeholder="Red, Blue..." data-item-id="${itemId}" data-field="color">
             </div>
             <div>
                 <label>Price (TL)</label>
-                <input type="number" class="input" step="0.01" min="0" oninput="console.log('Price input changed:', this.value); updateItemById('${itemId}', 'priceTL', parseFloat(this.value) || 0)">
+                <input type="number" class="input" step="0.01" min="0" data-item-id="${itemId}" data-field="priceTL">
             </div>
             <div>
                 <label>Weight (kg)</label>
-                <input type="number" class="input" step="0.1" min="0" oninput="updateItemById('${itemId}', 'weightKg', parseFloat(this.value) || 0)">
+                <input type="number" class="input" step="0.1" min="0" data-item-id="${itemId}" data-field="weightKg">
             </div>
             <div>
                 <label>Quantity</label>
-                <input type="number" class="input" min="1" value="1" oninput="updateItemById('${itemId}', 'qty', parseInt(this.value) || 1)">
+                <input type="number" class="input" min="1" value="1" data-item-id="${itemId}" data-field="qty">
             </div>
         </div>
     `;
     
     itemsContainer.appendChild(productItem);
+    
+    // Add event listeners to the inputs
+    const inputs = productItem.querySelectorAll('input[data-item-id]');
+    inputs.forEach(input => {
+        const field = input.getAttribute('data-field');
+        const itemId = input.getAttribute('data-item-id');
+        
+        input.addEventListener('input', function() {
+            console.log(`${field} input changed:`, this.value);
+            let value = this.value;
+            
+            // Convert numeric fields
+            if (field === 'priceTL' || field === 'weightKg') {
+                value = parseFloat(value) || 0;
+            } else if (field === 'qty') {
+                value = parseInt(value) || 1;
+            }
+            
+            updateItemById(itemId, field, value);
+        });
+    });
+    
     const newItem = {
         id: itemId, // Use the same ID as in the HTML template
         url: '',
