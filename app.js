@@ -285,9 +285,13 @@ function addProductItem() {
     
     // Add event listeners to the inputs
     const inputs = productItem.querySelectorAll('input[data-item-id]');
+    console.log(`🔧 Found ${inputs.length} inputs to attach listeners to for item ${itemId}`);
+    
     inputs.forEach(input => {
         const field = input.getAttribute('data-field');
         const itemId = input.getAttribute('data-item-id');
+        
+        console.log(`🔧 Attaching listener to ${field} input for item ${itemId}`);
         
         input.addEventListener('input', function() {
             console.log(`${field} input changed:`, this.value);
@@ -300,7 +304,13 @@ function addProductItem() {
                 value = parseInt(value) || 1;
             }
             
+            console.log(`🔧 About to call updateItemById with:`, { itemId, field, value });
             updateItemById(itemId, field, value);
+        });
+        
+        // Also add a test event to see if the listener is working
+        input.addEventListener('focus', function() {
+            console.log(`🔧 ${field} input focused for item ${itemId}`);
         });
     });
     
@@ -389,8 +399,10 @@ window.updateItem = updateItem;
 
 // New function that works with item IDs
 function updateItemById(itemId, field, value) {
-    console.log(`🔄 Updating item by ID ${itemId}, field: ${field}, value: ${value}`);
-    console.log(`🔍 Current items array:`, items);
+    console.log(`🔄 updateItemById called:`, { itemId, field, value });
+    console.log(`🔍 Current items array length:`, items.length);
+    console.log(`🔍 Items array:`, items);
+    
     const itemIndex = items.findIndex(item => item.id === itemId);
     console.log(`🔍 Item index found: ${itemIndex}`);
     
@@ -404,15 +416,38 @@ function updateItemById(itemId, field, value) {
         });
         console.log(`🔍 Items array after update:`, items);
         recalculateTotals();
+        return true;
     } else {
         console.log(`❌ Item ${itemId} not found in items array`);
         console.log(`🔍 Available item IDs:`, items.map(item => item.id));
+        return false;
     }
 }
 
 // Make updateItemById globally available
 window.updateItemById = updateItemById;
 console.log('🔧 updateItemById function registered globally:', typeof window.updateItemById);
+
+// Test function to manually test event listeners
+window.testEventListeners = function() {
+    console.log('🧪 Testing event listeners...');
+    const inputs = document.querySelectorAll('input[data-item-id]');
+    console.log(`🧪 Found ${inputs.length} inputs with data-item-id`);
+    
+    inputs.forEach(input => {
+        const field = input.getAttribute('data-field');
+        const itemId = input.getAttribute('data-item-id');
+        console.log(`🧪 Input: ${field} for item ${itemId}, value: "${input.value}"`);
+        
+        // Test if we can manually call updateItemById
+        if (field === 'size' && input.value) {
+            console.log(`🧪 Manually testing updateItemById for size field`);
+            updateItemById(itemId, field, input.value);
+        }
+    });
+    
+    console.log('🧪 Current items array:', items);
+};
 
 function addInitialProductItem() {
     console.log('🔄 Adding initial product item...');
