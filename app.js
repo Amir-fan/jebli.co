@@ -368,13 +368,23 @@ window.updateItem = updateItem;
 // New function that works with item IDs
 function updateItemById(itemId, field, value) {
     console.log(`🔄 Updating item by ID ${itemId}, field: ${field}, value: ${value}`);
+    console.log(`🔍 Current items array:`, items);
     const itemIndex = items.findIndex(item => item.id === itemId);
+    console.log(`🔍 Item index found: ${itemIndex}`);
+    
     if (itemIndex !== -1) {
+        const oldValue = items[itemIndex][field];
         items[itemIndex][field] = value;
-        console.log(`✅ Updated item ${itemId}:`, items[itemIndex]);
+        console.log(`✅ Updated item ${itemId} field ${field}:`, {
+            oldValue: oldValue,
+            newValue: value,
+            fullItem: items[itemIndex]
+        });
+        console.log(`🔍 Items array after update:`, items);
         recalculateTotals();
     } else {
         console.log(`❌ Item ${itemId} not found in items array`);
+        console.log(`🔍 Available item IDs:`, items.map(item => item.id));
     }
 }
 
@@ -645,8 +655,32 @@ async function submitOrder() {
     
     // Build order payload
     console.log('🔍 All items before filtering:', items);
+    items.forEach((item, index) => {
+        console.log(`🔍 Item ${index + 1} details:`, {
+            id: item.id,
+            url: item.url,
+            size: item.size,
+            color: item.color,
+            priceTL: item.priceTL,
+            weightKg: item.weightKg,
+            qty: item.qty
+        });
+    });
+    
     const validItems = items.filter(item => item.url && item.priceTL > 0);
     console.log('✅ Valid items after filtering:', validItems);
+    
+    validItems.forEach((item, index) => {
+        console.log(`✅ Valid item ${index + 1} details:`, {
+            id: item.id,
+            url: item.url,
+            size: item.size,
+            color: item.color,
+            priceTL: item.priceTL,
+            weightKg: item.weightKg,
+            qty: item.qty
+        });
+    });
     
     // Calculate totals - ensure all values are numbers
     const subtotalTL = parseFloat(validItems.reduce((sum, item) => sum + (parseFloat(item.priceTL || 0) * (parseInt(item.qty || 1))), 0));
