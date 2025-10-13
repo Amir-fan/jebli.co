@@ -1058,6 +1058,16 @@ function saveOrderLocally(trackingId, orderPayload) {
         total_usd: localOrder.total_usd,
         totals: localOrder.totals
     });
+    console.log('💾 Order items structure:', localOrder.items);
+    if (localOrder.items && localOrder.items.length > 0) {
+        console.log('💾 First item details:', {
+            url: localOrder.items[0].url,
+            size: localOrder.items[0].size,
+            color: localOrder.items[0].color,
+            size_type: typeof localOrder.items[0].size,
+            color_type: typeof localOrder.items[0].color
+        });
+    }
 }
 
 // Reset order form

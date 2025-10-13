@@ -1256,7 +1256,13 @@ class AdminDashboard {
             console.log(`🔍 Item ${index + 1}:`, {
                 url: item.url,
                 size: item.size,
+                size_type: typeof item.size,
+                size_trimmed: item.size ? item.size.trim() : 'undefined',
+                size_is_empty: item.size === '',
                 color: item.color,
+                color_type: typeof item.color,
+                color_trimmed: item.color ? item.color.trim() : 'undefined',
+                color_is_empty: item.color === '',
                 qty: item.qty,
                 priceTL: item.priceTL,
                 weightKg: item.weightKg
@@ -1265,8 +1271,16 @@ class AdminDashboard {
         
         return items.map((item, index) => {
             // Handle different possible field names for size and color
-            const size = item.size || item.sizeText || item.sizeValue || 'Not specified';
-            const color = item.color || item.colorText || item.colorValue || 'Not specified';
+            // Check if the value exists and is not just an empty string
+            const size = (item.size && item.size.trim() !== '') ? item.size : 
+                        (item.sizeText && item.sizeText.trim() !== '') ? item.sizeText : 
+                        (item.sizeValue && item.sizeValue.trim() !== '') ? item.sizeValue : 
+                        'Not specified';
+                        
+            const color = (item.color && item.color.trim() !== '') ? item.color : 
+                         (item.colorText && item.colorText.trim() !== '') ? item.colorText : 
+                         (item.colorValue && item.colorValue.trim() !== '') ? item.colorValue : 
+                         'Not specified';
             
             return `
                 <div class="item-card">
