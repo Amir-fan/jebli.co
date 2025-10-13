@@ -260,11 +260,11 @@ function addProductItem() {
             </div>
             <div>
                 <label>Size</label>
-                <input type="text" class="input" placeholder="M, L, XL..." oninput="updateItemById('${itemId}', 'size', this.value)">
+                <input type="text" class="input" placeholder="M, L, XL..." oninput="console.log('Size input changed:', this.value); updateItemById('${itemId}', 'size', this.value)">
             </div>
             <div>
                 <label>Color</label>
-                <input type="text" class="input" placeholder="Red, Blue..." oninput="updateItemById('${itemId}', 'color', this.value)">
+                <input type="text" class="input" placeholder="Red, Blue..." oninput="console.log('Color input changed:', this.value); updateItemById('${itemId}', 'color', this.value)">
             </div>
             <div>
                 <label>Price (TL)</label>
@@ -390,6 +390,7 @@ function updateItemById(itemId, field, value) {
 
 // Make updateItemById globally available
 window.updateItemById = updateItemById;
+console.log('🔧 updateItemById function registered globally:', typeof window.updateItemById);
 
 function addInitialProductItem() {
     console.log('🔄 Adding initial product item...');
