@@ -1141,6 +1141,12 @@ class AdminDashboard {
     
     // Show order details in a modal
     showOrderDetailsModal(order) {
+        // Debug logging for order data
+        console.log('🔍 Showing order details modal for:', order.tracking_id || order.id);
+        console.log('🔍 Full order data:', order);
+        console.log('🔍 Order items:', order.items);
+        console.log('🔍 Order items_json:', order.items_json);
+        
         const modal = document.createElement('div');
         modal.className = 'modal show';
         modal.innerHTML = `
@@ -1234,6 +1240,7 @@ class AdminDashboard {
             try {
                 items = JSON.parse(order.items_json);
             } catch (e) {
+                console.error('Error parsing items_json:', e);
                 items = [];
             }
         }
@@ -1242,21 +1249,41 @@ class AdminDashboard {
             return '<p class="muted">No items found</p>';
         }
         
-        return items.map((item, index) => `
-            <div class="item-card">
-                <div class="item-header">
-                    <strong>Item ${index + 1}</strong>
+        // Debug logging for items data
+        console.log('🔍 Rendering items for order:', order.tracking_id || order.id);
+        console.log('🔍 Items data:', items);
+        items.forEach((item, index) => {
+            console.log(`🔍 Item ${index + 1}:`, {
+                url: item.url,
+                size: item.size,
+                color: item.color,
+                qty: item.qty,
+                priceTL: item.priceTL,
+                weightKg: item.weightKg
+            });
+        });
+        
+        return items.map((item, index) => {
+            // Handle different possible field names for size and color
+            const size = item.size || item.sizeText || item.sizeValue || 'Not specified';
+            const color = item.color || item.colorText || item.colorValue || 'Not specified';
+            
+            return `
+                <div class="item-card">
+                    <div class="item-header">
+                        <strong>Item ${index + 1}</strong>
+                    </div>
+                    <div class="item-details">
+                        <p><strong>URL:</strong> <a href="${item.url || '#'}" target="_blank" rel="noopener">${item.url || 'N/A'}</a></p>
+                        <p><strong>Size:</strong> ${size}</p>
+                        <p><strong>Color:</strong> ${color}</p>
+                        <p><strong>Quantity:</strong> ${item.qty || item.quantity || 1}</p>
+                        ${item.priceTL || item.price ? `<p><strong>Price (TL):</strong> ₺${parseFloat(item.priceTL || item.price || 0).toFixed(2)}</p>` : '<p><strong>Price (TL):</strong> Not specified</p>'}
+                        ${item.weightKg || item.weight ? `<p><strong>Weight:</strong> ${parseFloat(item.weightKg || item.weight || 0).toFixed(2)} kg</p>` : '<p><strong>Weight:</strong> Not specified</p>'}
+                    </div>
                 </div>
-                <div class="item-details">
-                    <p><strong>URL:</strong> <a href="${item.url}" target="_blank" rel="noopener">${item.url}</a></p>
-                    ${item.size ? `<p><strong>Size:</strong> ${item.size}</p>` : ''}
-                    ${item.color ? `<p><strong>Color:</strong> ${item.color}</p>` : ''}
-                    ${item.qty ? `<p><strong>Quantity:</strong> ${item.qty}</p>` : ''}
-                    ${item.priceTL ? `<p><strong>Price (TL):</strong> ₺${parseFloat(item.priceTL).toFixed(2)}</p>` : ''}
-                    ${item.weightKg ? `<p><strong>Weight:</strong> ${parseFloat(item.weightKg).toFixed(2)} kg</p>` : ''}
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
     
     // Get status class for styling

@@ -338,6 +338,7 @@ function handleListOrders() {
     // Process each order row (skip header)
     for (let i = 1; i < values.length; i++) {
       const orderData = getOrderDataFromRow(sheet, i);
+      console.log(`🔍 Order ${orderData.tracking_id} items:`, orderData.items);
       orders.push(orderData);
     }
     
@@ -415,6 +416,17 @@ function getOrderDataFromRow(sheet, rowIndex) {
   let items = [];
   try {
     items = JSON.parse(row[6] || '[]');
+    console.log('🔍 Parsed items from sheet:', items);
+    if (items.length > 0) {
+      console.log('🔍 First item details:', {
+        url: items[0].url,
+        size: items[0].size,
+        color: items[0].color,
+        qty: items[0].qty,
+        priceTL: items[0].priceTL,
+        weightKg: items[0].weightKg
+      });
+    }
   } catch (error) {
     console.error('Error parsing items JSON:', error);
     items = [];
